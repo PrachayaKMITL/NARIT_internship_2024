@@ -44,15 +44,15 @@ class prediction:
 
     def classify_sky(self, cloud_percentage):
         if cloud_percentage < 10:
-            return 0  # Clear
+            return "0 clear"  # Clear
         elif cloud_percentage < 25:
-            return 1  # Mostly Clear
+            return "1 (Mostly clear)"  # Mostly Clear
         elif cloud_percentage < 50:
-            return 2  # Partly Cloudy
+            return "2 (Partly cloudy)"  # Partly Cloudy
         elif cloud_percentage < 75:
-            return 3  # Mostly Cloudy
+            return "3 (Mostly cloudy)"  # Mostly Cloudy
         else:
-            return 4  # Overcast
+            return "4 (Overcast)"  # Overcast
 
     def total_prediction(self, image_path, mask_path, crop_size=570, properties=None, kmeans=None, GMM=None):
         if properties is None:

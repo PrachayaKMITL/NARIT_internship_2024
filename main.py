@@ -15,7 +15,7 @@ result = []
 pred = prediction()
 viz = visualizer()
 tim = timeConvertion()
-image_list = image.getFilename(r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_Astropark_Chaingmai\2024-06\2024-06-19')
+image_list = image.getFilename(r'C:\Users\ASUS\Documents\NARIT_internship_data\Test_folder')
 leng = len(image_list)
 for i in image_list:
     m += 1
