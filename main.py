@@ -19,7 +19,7 @@ leng = len(image_list)
 for i in image_list:
     m += 1
     warnings.filterwarnings("ignore")
-    output = pred.total_prediction(image_path=i,mask_path='mask_delete_5.png',kmeans=kmean,GMM=gmm)
+    output = pred.total_prediction(image_path=i,mask_path=r'C:\Users\ASUS\Documents\NARIT_internship_data\Mask_obs\mask_delete_5.png',kmeans=kmean,GMM=gmm)
     pred_t = [output[0],output[1]]
     clarity = 100-pred.weighted_prediction(weight=None,predicted_result=pred_t,cloud_percent=output[2],sky_status=output[3])[0]
     img = cv2.imread(i)
@@ -41,3 +41,4 @@ df_out = pd.DataFrame(data=result,columns=['Kmean_clustering','GMM_clustering',
                                            'Cloud_coverage %','Sky_status',
                                            'Sky clarity','Raw image','Final image'])
 df_out.to_html(r"C:\Users\ASUS\Documents\NARIT_internship_data\Output_HTML\Output.html",index=False,escape=False,justify='center')
+print("-----------Writing_complete------------")
