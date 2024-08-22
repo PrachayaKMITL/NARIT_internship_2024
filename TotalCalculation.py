@@ -47,20 +47,22 @@ class SunPosition:
         return sunrise,sunset
     
 class timeConvertion:
-    def ticks_to_datetime(ticks,time_zone:int):
+    def __init__(self):
+        pass
+    def ticks_to_datetime(self,ticks,time_zone:int):
         epoch = dt(1, 1, 1)
         delta = datetime.timedelta(microseconds=ticks/10) 
         result_dt = epoch + delta
         result_dt += datetime.timedelta(hours=time_zone)
         return result_dt
-    def time_duration(start_date,end_date,include_end_date:bool):
+    def time_duration(self,start_date,end_date,include_end_date:bool):
         start_date = dt.strptime(start_date,'%Y-%m-%d').date()
         end_date = dt.strptime(end_date.split()[0],'%Y-%m-%d').date()
         duration = end_date-start_date
         if include_end_date:
             duration += datetime.timedelta(days=1)
         return duration
-    def decimal_to_UTC(decimal_time, base_date=None):
+    def decimal_to_UTC(self,decimal_time, base_date=None):
         hours = int(decimal_time)
         minutes = int((decimal_time - hours) * 60)
         seconds = int(((decimal_time - hours) * 60 - minutes) * 60)
