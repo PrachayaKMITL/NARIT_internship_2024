@@ -72,10 +72,10 @@ class prediction:
     def weighted_prediction(self,weight:None,predicted_result:list, cloud_percent:float,sky_status=None):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
-        if (sky_status == 'Mostly Cloudy') or (sky_status == 'Overcast'):
-            risk_factor =  (predicted_result[1]+cloud_percent+4)/108*100
+        if (sky_status == '3 (Mostly cloudy)') or (sky_status == '4 (Overcast)'):
+            risk_factor =  (predicted_result[0]+predicted_result[1]+cloud_percent)/108*100
         else:
-            risk_factor =  (predicted_result[1]+cloud_percent+4)/108*100
+            risk_factor =  0.7*(predicted_result[0]+predicted_result[1]+cloud_percent)/108*100
         return risk_factor
 class visualizer:
     def __init__(self):
