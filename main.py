@@ -20,7 +20,7 @@ leng = len(image_list)
 for i in image_list:
     m += 1
     warnings.filterwarnings("ignore")
-    output = pred.total_prediction(image_path=i,mask_path=r'C:\Users\ASUS\Documents\NARIT_internship_data\Mask_obs\mask_delete_5.png',kmeans=kmean,GMM=gmm)
+    output = pred.total_prediction(image_path=i,mask_path=r'mask_new.png',kmeans=kmean,GMM=gmm)
     time = int(os.path.splitext(os.path.basename(i))[0])
     time = tim.ticks_to_datetime(time,7)
     time = time.strftime('%Y-%m-%d %H:%M')
