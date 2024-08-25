@@ -43,5 +43,5 @@ print("\n---------Prediction complete---------")
 df_out = pd.DataFrame(data=result,columns=['Time','Kmean_clustering','GMM_clustering',
                                            'Cloud_coverage %','Sky_status',
                                            'Sky clarity (%)','Raw image','Final image'])
-df_out.to_html(r"C:\Users\User\OneDrive - KMITL\Documents\NARIT_internship_date\Output_HTML",index=False,escape=False,justify='center')
+df_out.to_html(r"Output.html",index=False,escape=False,justify='center')
 print("-----------Writing_complete----------")

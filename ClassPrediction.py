@@ -23,7 +23,7 @@ class prediction:
             chan_b.append(np.mean(B))
             chan_r.append(np.mean(R))
             intensity = np.mean(B)
-            ratio = (R/B)*intensity/11
+            ratio = (R/B)*intensity/9
             ratio = cv2.convertScaleAbs(ratio)
             final_mask = cv2.threshold(ratio, intensity/20, 255, cv2.THRESH_BINARY)[1]
             masked = cv2.bitwise_and(i, i, mask=final_mask)
