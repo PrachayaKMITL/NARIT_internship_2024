@@ -15,7 +15,7 @@ result = []
 pred = prediction()
 viz = visualizer()
 tim = timeConvertion()
-image_list = image.getFilename(r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_Astropark_Chaingmai\2024-06\2024-06-25')
+image_list = image.getFilename(r'C:\Users\User\OneDrive - KMITL\Documents\NARIT_internship_date\Image_testing')
 leng = len(image_list)
 for i in image_list:
     m += 1
@@ -43,5 +43,5 @@ print("\n---------Prediction complete---------")
 df_out = pd.DataFrame(data=result,columns=['Time','Kmean_clustering','GMM_clustering',
                                            'Cloud_coverage %','Sky_status',
                                            'Sky clarity (%)','Raw image','Final image'])
-df_out.to_html(r"C:\Users\ASUS\Documents\NARIT_internship_data\Output_HTML\Output.html",index=False,escape=False,justify='center')
+df_out.to_html(r"C:\Users\User\OneDrive - KMITL\Documents\NARIT_internship_date\Output_HTML",index=False,escape=False,justify='center')
 print("-----------Writing_complete----------")
