@@ -99,21 +99,19 @@ def RBratio(input):
     chan_b = []
     chan_r = []
     e = 1e-11
-    threshold = Threshold(input)
     for i in input:
         R,_,B = cv2.split(i)
         B = B+e
         chan_b.append(np.mean(B))
         chan_r.append(np.mean(R))
         intensity = np.mean(B)
-        if intensity < threshold:
+        '''if intensity < threshold:
             ratio = (R/B)*intensity/8
             ratio = cv2.convertScaleAbs(ratio)
-            final_mask = cv2.threshold(ratio, intensity/10, 255, cv2.THRESH_BINARY)[1]
-        if intensity >= threshold:
-            ratio = (R/B)*intensity/10
-            ratio = cv2.convertScaleAbs(ratio)
-            final_mask = cv2.threshold(ratio, intensity/20, 255, cv2.THRESH_BINARY)[1]
+            final_mask = cv2.threshold(ratio, intensity/10, 255, cv2.THRESH_BINARY)[1]'''
+        ratio = (R/B)*intensity/9
+        ratio = cv2.convertScaleAbs(ratio)
+        final_mask = cv2.threshold(ratio, intensity/20, 255, cv2.THRESH_BINARY)[1]
         '''if intensity < threshold-26:
             ratio = (R/B)*intensity/8
             ratio_1 = cv2.convertScaleAbs(ratio)
@@ -157,10 +155,10 @@ def load_single_image(path:str,mask:str,apply_crop_sun:bool,crop_size:int):
     return images,name
 def Edging(input:list,ker_size:int):
     grad = []
-    clahe = cv2.createCLAHE(clipLimit=50, tileGridSize=(8, 8))
+    clahe = cv2.createCLAHE(clipLimit=40, tileGridSize=(8, 8))
     for i in input:
         i = clahe.apply(i)
-        gre = ((cv2.Sobel(i, cv2.CV_64F, 0, 1, ksize=ker_size)+cv2.Sobel(i, cv2.CV_64F, 1, 0, ksize=ker_size))/1000)+60
+        gre = ((cv2.Sobel(i, cv2.CV_64F, 0, 1, ksize=ker_size)+cv2.Sobel(i, cv2.CV_64F, 1, 0, ksize=ker_size))/1000)+50
         _,thresh = cv2.threshold(gre,0,255,cv2.THRESH_TOZERO)
         grad.append(cv2.convertScaleAbs(thresh))
     return grad

@@ -63,7 +63,7 @@ class prediction:
         final, value, RB = self.RBsingle(images)
         glcm = computeGlcm(image=final, distance=[3], angle=[45])
         test = getDataframe(property=properties, gray_level=glcm, index=filename, intensity=value, RB=RB)
-        x = test.drop(columns=['Blue channel', 'intensity'])
+        x = test.drop(columns=['Red channel','correlation','Blue channel', 'intensity'])
         predict_1 = kmeans.predict(x)
         predict_2 = GMM.predict(x)
         cloud_ratio = self.CloudRatio(image=final,mask=mask)
@@ -112,11 +112,11 @@ class visualizer:
 class Evaluation:
     def __init__(self):
         pass
-    def silhouette(self,model ,data, n):
+    def silhouette(self,data, n):
         k=range(2,n)
         s = []
         for n_clusters in k:
-            clusters = model
+            clusters = KMeans(n_clusters=n_clusters,tol=1e-4, random_state=42, init='k-means++' ,n_init='auto', max_iter=500, algorithm='lloyd')
             clusters.fit(data)
             labels = clusters.labels_
             centroids = clusters.cluster_centers_

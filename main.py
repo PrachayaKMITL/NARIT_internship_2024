@@ -7,15 +7,15 @@ import cv2
 import warnings
 import os 
 m = 0
-with open(r'models\kmean_model_2.pkl', 'rb') as file:
+with open(r'models\kmean_model_3.pkl', 'rb') as file:
     kmean = pickle.load(file)
-with open(r'models\gmm_model_2.pkl', 'rb') as file:
+with open(r'models\gmm_model_3.pkl', 'rb') as file:
     gmm = pickle.load(file)
 result = []
 pred = prediction()
 viz = visualizer()
 tim = timeConvertion()
-image_list = image.getFilename(r'C:\Users\User\OneDrive - KMITL\Documents\NARIT_internship_date\Image_testing')
+image_list = image.getFilename(r'C:\Users\ASUS\Documents\NARIT_internship_data\Test_folder')
 leng = len(image_list)
 for i in image_list:
     m += 1
@@ -43,5 +43,5 @@ print("\n---------Prediction complete---------")
 df_out = pd.DataFrame(data=result,columns=['Time','Kmean_clustering','GMM_clustering',
                                            'Cloud_coverage %','Sky_status',
                                            'Sky clarity (%)','Raw image','Final image'])
-df_out.to_html(r"Output.html",index=False,escape=False,justify='center')
+df_out.to_html(r"C:\Users\ASUS\Documents\NARIT_internship_data\Output_HTML\Output.html",index=False,escape=False,justify='center')
 print("-----------Writing_complete----------")
