@@ -155,7 +155,15 @@ def load_single_image(path:str,mask:str,apply_crop_sun:bool,crop_size:int):
     images.append(img)
     name.append(int(os.path.splitext(os.path.basename(path))[0]))
     return images,name
-
+def Edging(input:list,ker_size:int):
+    grad = []
+    clahe = cv2.createCLAHE(clipLimit=50, tileGridSize=(8, 8))
+    for i in input:
+        i = clahe.apply(i)
+        gre = ((cv2.Sobel(i, cv2.CV_64F, 0, 1, ksize=ker_size)+cv2.Sobel(i, cv2.CV_64F, 1, 0, ksize=ker_size))/1000)+60
+        _,thresh = cv2.threshold(gre,0,255,cv2.THRESH_TOZERO)
+        grad.append(cv2.convertScaleAbs(thresh))
+    return grad
 def getDataframe(property:list,gray_level,index:list,intensity,RB):
     dataset = {
         prop : [] for prop in property
