@@ -110,11 +110,13 @@ class visualizer:
         print(f'\rProgress: [{arrow}{spaces}] {percent:.3f}%', end='')
 
 class Evaluation:
-    def silhouette(data, n):
+    def __init__(self):
+        pass
+    def silhouette(self,model ,data, n):
         k=range(2,n)
         s = []
         for n_clusters in k:
-            clusters = KMeans(n_clusters = n_clusters,init = 'k-means++')
+            clusters = model
             clusters.fit(data)
             labels = clusters.labels_
             centroids = clusters.cluster_centers_
@@ -129,7 +131,7 @@ class Evaluation:
         plt.xlabel("Number of clusters")
         plt.title("Silouette for KMeans clustering")
         plt.show()
-    def silhouette_GMM(data, max_n_clusters):
+    def silhouette_GMM(self,data, max_n_clusters):
         k = range(2, max_n_clusters)  # Range of cluster numbers to try
         s = []
 
