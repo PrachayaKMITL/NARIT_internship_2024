@@ -7,10 +7,10 @@ import cv2
 import warnings
 import os 
 m = 0
-with open(r'models\kmean_model_3.pkl', 'rb') as file:
+with open(r'models\kmean_model_6.pkl', 'rb') as file:
     kmean = pickle.load(file)
-with open(r'models\gmm_model_3.pkl', 'rb') as file:
-    gmm = pickle.load(file)
+with open(r'models\miniBkmean_model_6.pkl', 'rb') as file:
+    minik = pickle.load(file)
 result = []
 pred = prediction()
 viz = visualizer()
@@ -20,7 +20,7 @@ leng = len(image_list)
 for i in image_list:
     m += 1
     warnings.filterwarnings("ignore")
-    output = pred.total_prediction(image_path=i,mask_path=r'mask_new.png',kmeans=kmean,GMM=gmm)
+    output = pred.total_prediction(image_path=i,mask_path=r'mask_new.png',kmeans=kmean,miniBatchesKmeans=minik)
     time = int(os.path.splitext(os.path.basename(i))[0])
     time = tim.ticks_to_datetime(time,7)
     time = time.strftime('%Y-%m-%d %H:%M')

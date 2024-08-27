@@ -54,7 +54,7 @@ class prediction:
         else:
             return "4 (Overcast)"  # Overcast
 
-    def total_prediction(self, image_path, mask_path, crop_size=570, properties=None, kmeans=None, GMM=None):
+    def total_prediction(self, image_path, mask_path, crop_size=570, properties=None, kmeans=None, miniBatchesKmeans=None):
         if properties is None:
             properties = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']
         mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
@@ -65,7 +65,7 @@ class prediction:
         test = getDataframe(property=properties, gray_level=glcm, index=filename, intensity=value, RB=RB)
         x = test.drop(columns=['Red channel','correlation','Blue channel', 'intensity'])
         predict_1 = kmeans.predict(x)
-        predict_2 = GMM.predict(x)
+        predict_2 = miniBatchesKmeans.predict(x)
         cloud_ratio = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio)
         return [predict_1,predict_2,cloud_ratio,sky_status,final]
@@ -73,9 +73,9 @@ class prediction:
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
         if (sky_status == '3 (Mostly cloudy)') or (sky_status == '4 (Overcast)'):
-            risk_factor =  (predicted_result[0]+predicted_result[1]+cloud_percent)/108*100
+            risk_factor =  ((predicted_result[0]+predicted_result[1])/8+cloud_percent)/108*100
         else:
-            risk_factor =  0.7*(predicted_result[0]+predicted_result[1]+cloud_percent)/108*100
+            risk_factor =  0.8*((predicted_result[0]+predicted_result[1])/8+cloud_percent)/108*100
         return risk_factor
 class visualizer:
     def __init__(self):
