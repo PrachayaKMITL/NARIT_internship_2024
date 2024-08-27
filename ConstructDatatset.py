@@ -10,3 +10,9 @@ class Builddataset:
             name = os.path.join(folder_name,filename)
             data_list.append(pd.read_csv(name,index_col='Unnamed: 0'))
         return pd.concat(data_list)
+    def DayNightSplit(self,suntime,dataframe,Mode:str):
+        if Mode == 'day':
+            dataframe = dataframe[(dataframe['Time (decimal)'] > suntime[0]) & (dataframe['Time (decimal)'] < suntime[1])]
+        if Mode == 'night':
+            dataframe = dataframe[(dataframe['Time (decimal)'] < suntime[0]) | (dataframe['Time (decimal)'] > suntime[1])]
+        return dataframe

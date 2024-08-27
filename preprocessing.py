@@ -153,12 +153,12 @@ def load_single_image(path:str,mask:str,apply_crop_sun:bool,crop_size:int):
     images.append(img)
     name.append(int(os.path.splitext(os.path.basename(path))[0]))
     return images,name
-def Edging(input:list,ker_size:int):
+def Edging(input:list,ker_size:int,cliplimit:int,gridsize:int,bias:int):
     grad = []
-    clahe = cv2.createCLAHE(clipLimit=40, tileGridSize=(8, 8))
+    clahe = cv2.createCLAHE(clipLimit=cliplimit, tileGridSize=(gridsize, gridsize))
     for i in input:
         i = clahe.apply(i)
-        gre = ((cv2.Sobel(i, cv2.CV_64F, 0, 1, ksize=ker_size)+cv2.Sobel(i, cv2.CV_64F, 1, 0, ksize=ker_size))/1000)+50
+        gre = ((cv2.Sobel(i, cv2.CV_64F, 0, 1, ksize=ker_size)+cv2.Sobel(i, cv2.CV_64F, 1, 0, ksize=ker_size))/1000)+bias
         _,thresh = cv2.threshold(gre,0,255,cv2.THRESH_TOZERO)
         grad.append(cv2.convertScaleAbs(thresh))
     return grad
