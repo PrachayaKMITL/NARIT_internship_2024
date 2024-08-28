@@ -146,13 +146,19 @@ class thresholding:
 #        chan_r = np.array(chan_r).reshape(-1,1)
 #        chan_b = np.array(chan_b).reshape(-1,1)
 #        return final,value,RB.T
-    def RBratio(self,input):
+    def RBratio(self,input,filename,sunrise,sunset):
         final = []
         value= []
         chan_b = []
         chan_r = []
         e = 1e-11
-        for i in input:
+        filtering = lambda x : (x > sunrise) & (x < sunset)
+        decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=7)) for t in filename]
+        day_indices = [index for index, value in enumerate(decimal) if filtering(value)]
+        night_indices = [index for index, value in enumerate(decimal) if not filtering(value)]
+        day_input = [input[i] for i in day_indices]
+        night_input = [input[i] for i in night_indices]
+        for i in day_input:
             R,_,B = cv2.split(i)
             B = B+e
             chan_b.append(np.mean(B))
@@ -161,6 +167,20 @@ class thresholding:
             ratio = (R/B)*intensity/9
             ratio = cv2.convertScaleAbs(ratio)
             final_mask = cv2.threshold(ratio, intensity/20, 255, cv2.THRESH_BINARY)[1]
+
+            masked = cv2.bitwise_and(i,i,mask=final_mask)
+            masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
+            final.append(masked_gray)
+            value.append(intensity)
+        for i in night_input:
+            R,_,B = cv2.split(i)
+            B = B+e
+            chan_b.append(np.mean(B))
+            chan_r.append(np.mean(R))
+            intensity = np.mean(B)
+            ratio = (R/B)*intensity/6
+            ratio = cv2.convertScaleAbs(ratio)
+            final_mask = cv2.threshold(ratio, intensity/10, 255, cv2.THRESH_BINARY)[1]
 
             masked = cv2.bitwise_and(i,i,mask=final_mask)
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
