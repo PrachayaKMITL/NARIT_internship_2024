@@ -217,5 +217,33 @@ class image:
         for filename in os.listdir(path):
             img.append(os.path.join(path,filename))
         return img
+class thresholding:
+    def __init__(self):
+        pass
 
-    
+    def RBratioNight(self,input):
+        final = []
+        value= []
+        chan_b = []
+        chan_r = []
+        e = 1e-11
+        threshold = Threshold(input)
+        for i in input:
+            R,_,B = cv2.split(i)
+            B = B+e
+            chan_b.append(np.mean(B))
+            chan_r.append(np.mean(R))
+            intensity = np.mean(B)
+            if intensity < threshold:
+                ratio = (R/B)*intensity/6
+                ratio = cv2.convertScaleAbs(ratio)
+                final_mask = cv2.threshold(ratio, intensity/8, 255, cv2.THRESH_BINARY)[1]
+                masked = cv2.bitwise_and(i,i,mask=final_mask)
+                masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)*2
+                final.append(masked_gray)
+            value.append(intensity)
+        chan_r = np.array(chan_r).reshape(-1,1)
+        chan_b = np.array(chan_b).reshape(-1,1)
+        RB = np.concatenate((chan_r,chan_b),axis=1)
+        return final,value,RB.T 
+        

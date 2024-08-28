@@ -16,3 +16,5 @@ class Builddataset:
         if Mode == 'night':
             dataframe = dataframe[(dataframe['Time (decimal)'] < suntime[0]) | (dataframe['Time (decimal)'] > suntime[1])]
         return dataframe
+
+class 
