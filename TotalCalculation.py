@@ -45,6 +45,17 @@ class SunPosition:
         sunrise = 12 - (1 / 15) * np.degrees(np.arccos(-argument)) - (TC / 60)
         sunset = 12 + (1 / 15) * np.degrees(np.arccos(-argument)) - (TC / 60)
         return sunrise,sunset
+    def SunriseSunset(self,filename,start_date,include_end_date:bool):
+        start_date = start_date
+        end_date = str(timeConvertion().ticks_to_datetime(ticks=filename[5],time_zone=7).date())
+        location = [18.849417,98.9538]
+        days = timeConvertion().time_duration(start_date,end_date,include_end_date=include_end_date).days
+        LSTM = SunPosition.LSTM(time_zone_offset=7)
+        EoT = SunPosition.calculate_EoT(day=days)
+        TC = SunPosition.TimeCorrectionFactor(Longitude=location[1],LSTM=LSTM,EoT=EoT)
+        dec = SunPosition.declination(day=days)
+        sunrise,sunset = SunPosition.DaytimeInfo(latitude=location[0],declination=dec,TC=TC)
+        return sunrise,sunset
     
 class timeConvertion:
     def __init__(self):
@@ -68,7 +79,5 @@ class timeConvertion:
         seconds = int(((decimal_time - hours) * 60 - minutes) * 60)
         time_delta = datetime.timedelta(hours=hours, minutes=minutes, seconds=seconds)
         return time_delta
-
-#class SunpixelCalculation:
-#    def SunpixelCoor(img,altitude,azimuth):
-        
+    def datetime_to_decimal(self,time):
+        return time.hour+time.minute/60+time.second/3600

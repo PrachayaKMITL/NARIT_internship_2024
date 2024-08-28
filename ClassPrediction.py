@@ -58,11 +58,11 @@ class prediction:
         if properties is None:
             properties = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']
         mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-        mask = crop_center(mask, crop_size=crop_size)
-        images, filename = load_single_image(image_path, mask=mask, crop_size=crop_size, apply_crop_sun=True)
+        mask = preprocessData().crop_center(mask, crop_size=crop_size)
+        images, filename = preprocessData().load_single_image(image_path, mask=mask, crop_size=crop_size, apply_crop_sun=True)
         final, value, RB = self.RBsingle(images)
-        glcm = computeGlcm(image=final, distance=[3], angle=[45])
-        test = getDataframe(property=properties, gray_level=glcm, index=filename, intensity=value, RB=RB)
+        glcm = preprocessData().computeGlcm(image=final, distance=[3], angle=[45])
+        test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename, intensity=value, RB=RB)
         x = test.drop(columns=['Red channel','correlation','Blue channel', 'intensity'])
         predict_1 = kmeans.predict(x)
         predict_2 = miniBatchesKmeans.predict(x)

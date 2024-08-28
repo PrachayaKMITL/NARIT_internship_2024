@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os 
+
 class Builddataset:
     def __init__(self):
         pass        
@@ -17,4 +18,3 @@ class Builddataset:
             dataframe = dataframe[(dataframe['Time (decimal)'] < suntime[0]) | (dataframe['Time (decimal)'] > suntime[1])]
         return dataframe
 
-class 
