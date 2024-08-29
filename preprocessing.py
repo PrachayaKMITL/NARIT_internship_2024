@@ -180,7 +180,7 @@ class thresholding:
             intensity = np.mean(B)
             ratio = (R/B)*intensity/6
             ratio = cv2.convertScaleAbs(ratio)
-            final_mask = cv2.threshold(ratio, intensity/10, 255, cv2.THRESH_BINARY)[1]
+            final_mask = cv2.threshold(ratio, intensity/7.8, 255, cv2.THRESH_BINARY)[1]
 
             masked = cv2.bitwise_and(i,i,mask=final_mask)
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
