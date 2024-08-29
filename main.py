@@ -8,20 +8,20 @@ from ClassPrediction import prediction, visualizer
 from TotalCalculation import timeConvertion, SunPosition
 from preprocessing import image
 
-config_path = str(input("Enter configuration file path : "))
-with open(config_path, 'r') as config_file:
+sky_cam = str(input("Enter configuration selection(Chile,Astropark,China) : "))
+with open("configuration.json", 'r') as config_file:
     config = json.load(config_file)
-print(f"Current selection {config_path} selected")
+print(f"Current selection {sky_cam}")
 # Extract parameters from the config file
-start_date = config['parameters']['start_date']
-image_size = config['parameters']['size']
-mask_path = config['parameters']['mask']
-timezone = config['parameters']['timezone']
+start_date = config[sky_cam]['parameters']['start_date']
+image_size = config[sky_cam]['parameters']['size']
+mask_path = config[sky_cam]['parameters']['mask']
+timezone = config[sky_cam]['parameters']['timezone']
 
 # Extract paths from the config file
-output_dir = config['paths']['output_directory']
-kmean_model_path = config['paths']['kmean_model']
-minik_model_path = config['paths']['minik_model']
+output_dir = config[sky_cam]['paths']['output_directory']
+kmean_model_path = config[sky_cam]['paths']['kmean_model']
+minik_model_path = config[sky_cam]['paths']['minik_model']
 m = 0
 with open(kmean_model_path, 'rb') as file:
     kmean = pickle.load(file)
@@ -34,7 +34,7 @@ tim = timeConvertion()
 image_dir = str(input("Enter image directory : "))
 image_list = image.getFilename(image_dir)
 leng = len(image_list)
-print(f"Current configuration",config)
+print(f"Current configuration : ",sky_cam)
 for i in image_list:
     m += 1
     time = int(os.path.splitext(os.path.basename(i))[0])
