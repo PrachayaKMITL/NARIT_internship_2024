@@ -1,0 +1,14 @@
+{
+    "parameters": {
+      "start_date": "2024-01-01",
+      "size": [285, 200],
+      "mask": "mask_delete_5.png",
+      "timezone": -4
+    },
+    "paths": {
+      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",
+      "kmean_model": "models\\kmean_model_6.pkl",
+      "minik_model": "models\\miniBkmean_model_6.pkl"
+    }
+  }
+  

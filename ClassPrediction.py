@@ -43,24 +43,16 @@ class prediction:
         return area / mask * 100
 
     def classify_sky(self, cloud_percentage):
-        if cloud_percentage < 10:
-            return "0 clear"  # Clear
-        elif cloud_percentage < 25:
-            return "1 (Mostly clear)"  # Mostly Clear
-        elif cloud_percentage < 50:
-            return "2 (Partly cloudy)"  # Partly Cloudy
-        elif cloud_percentage < 75:
-            return "3 (Mostly cloudy)"  # Mostly Cloudy
-        else:
-            return "4 (Overcast)"  # Overcast
+        oktas = (cloud_percentage/100)*8
+        return str(f"{round(oktas)} oktas")
 
-    def total_prediction(self, image_path, mask_path, crop_size=570, properties=None, kmeans=None, miniBatchesKmeans=None):
+    def total_prediction(self, image_path, mask_path, crop_size=570, properties=None,sunrise=None,sunset=None,kmeans=None, miniBatchesKmeans=None):
         if properties is None:
             properties = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']
         mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
         mask = preprocessData().crop_center(mask, crop_size=crop_size)
         images, filename = preprocessData().load_single_image(image_path, mask=mask, crop_size=crop_size, apply_crop_sun=True)
-        final, value, RB = self.RBsingle(images)
+        final, value, RB = thresholding().RBratio(images,filename=filename,sunrise=sunrise,sunset=sunset)
         glcm = preprocessData().computeGlcm(image=final, distance=[3], angle=[45])
         test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename, intensity=value, RB=RB)
         x = test.drop(columns=['Red channel','correlation','Blue channel', 'intensity'])

@@ -111,6 +111,10 @@ class image:
         for filename in os.listdir(path):
             img.append(os.path.join(path,filename))
         return img
+    def filename_to_ticks(self,filename:int):
+        extract_name = lambda x : int(os.path.splitext(os.path.basename(x))[0])
+        filetime = [extract_name(i) for i in filename]
+        return filetime
     def extract_filename(filename:list,sunrise:float,sunset:float):
         extract_name = lambda x : int(os.path.splitext(os.path.basename(x))[0])
         filtering = lambda x : (x > sunrise) & (x < sunset)
@@ -164,10 +168,9 @@ class thresholding:
             chan_b.append(np.mean(B))
             chan_r.append(np.mean(R))
             intensity = np.mean(B)
-            ratio = (R/B)*intensity/9
+            ratio = np.log1p(R / (B + 1e-5)) * 1.2
             ratio = cv2.convertScaleAbs(ratio)
-            final_mask = cv2.threshold(ratio, intensity/20, 255, cv2.THRESH_BINARY)[1]
-
+            _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(i,i,mask=final_mask)
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
             final.append(masked_gray)
@@ -178,10 +181,9 @@ class thresholding:
             chan_b.append(np.mean(B))
             chan_r.append(np.mean(R))
             intensity = np.mean(B)
-            ratio = (R/B)*intensity/6
+            ratio = np.log1p(R / (B + 1e-5)) * 2.2
             ratio = cv2.convertScaleAbs(ratio)
-            final_mask = cv2.threshold(ratio, intensity/7.8, 255, cv2.THRESH_BINARY)[1]
-
+            _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(i,i,mask=final_mask)
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
             final.append(masked_gray)
