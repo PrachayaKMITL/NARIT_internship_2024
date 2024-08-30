@@ -4,6 +4,7 @@ import pickle
 import cv2
 import warnings
 import os
+import time as timer 
 from ClassPrediction import prediction, visualizer
 from TotalCalculation import timeConvertion, SunPosition
 from preprocessing import image
@@ -11,7 +12,7 @@ from preprocessing import image
 sky_cam = str(input("Enter configuration selection(Chile,Astropark,China) : "))
 with open("configuration.json", 'r') as config_file:
     config = json.load(config_file)
-print(f"Current selection '{sky_cam}'")
+print(f"Location : '{sky_cam}'")
 # Extract parameters from the config file
 start_date = config[sky_cam]['parameters']['start_date']
 image_size = config[sky_cam]['parameters']['size']
@@ -21,7 +22,8 @@ location = config[sky_cam]['parameters']['location']
 print("Start date : ", start_date)
 print("Time zone : ", timezone)
 print("Mask path : ", mask_path)
-print(f"Location : {location[0]}°N {location[1]}°E")
+print(f"Coordinate : {location[0]}°N {location[1]}°E")
+print("#################################################")
 # Extract paths from the config file
 output_dir = config[sky_cam]['paths']['output_directory']
 kmean_model_path = config[sky_cam]['paths']['kmean_model']
@@ -38,13 +40,13 @@ tim = timeConvertion()
 image_dir = str(input("Enter image directory : "))
 image_list = image.getFilename(image_dir)
 leng = len(image_list)
-print(f"Current configuration : ",sky_cam)
+start = timer.time()
 for i in image_list:
     m += 1
     time = int(os.path.splitext(os.path.basename(i))[0])
     warnings.filterwarnings("ignore")
     sunrise, sunset = SunPosition().SunriseSunset(location=location,filename=time, start_date=start_date,Time_zone=timezone, include_end_date=True)
-    output = pred.total_prediction(image_path=i, mask_path=mask_path, sunrise=sunrise, sunset=sunset, kmeans=kmean, miniBatchesKmeans=minik)
+    output = pred.total_prediction(image_path=i, mask_path=mask_path, sunrise=sunrise-0.067, sunset=sunset+0.067, kmeans=kmean, miniBatchesKmeans=minik)
     time = int(os.path.splitext(os.path.basename(i))[0])
     time = tim.ticks_to_datetime(time, time_zone=timezone)
     time = time.strftime('%Y-%m-%d %H:%M')
@@ -70,8 +72,11 @@ df_out = pd.DataFrame(data=result, columns=['Time', 'Kmean_clustering', 'GMM_clu
                                             'Cloud_coverage %', 'Sky_status',
                                             'Sky clarity (%)', 'Raw image', 'Final image'])
 
-df_out.to_html(os.path.join(output_dir, "Output.html"), index=False, escape=False, justify='center')
-df_out.drop(columns=['Final image','Raw image'])
-df_out.to_csv(os.path.join(output_dir, "output.csv"))
+df_out.to_html(os.path.join(output_dir, f"{sky_cam}_Output.html"), index=False, escape=False, justify='center')
+df_out = df_out.drop(columns=['Final image','Raw image'])
+df_out.to_csv(os.path.join(output_dir, f"{sky_cam}_Output.csv"))
 
-print("-----------Writing complete----------")
+print("-----------Writing complete----------\n")
+print(f"Runtime : {timer.time() - start} Seconds")
+timer.sleep(5)
+os.system('cls')
