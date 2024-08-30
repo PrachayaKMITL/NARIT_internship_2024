@@ -23,7 +23,7 @@ for folder in folders:
     sunrise,sunset = SunPosition().SunriseSunset(filename=filename,start_date=start_date,include_end_date=True)
     masked,value,RB = thresholding().RBratio(input=images,filename=filename,sunrise=sunrise,sunset=sunset)
     grad = preprocessData().Edging(input=masked,ker_size=7,cliplimit=40,gridsize=14,bias=50)
-    glcm = preprocessData().computeGlcm(image=masked,distance=[3],angle=[45])
+    glcm = preprocessData().computeGlcm(image=grad,distance=[3],angle=[45])
     df = preprocessData().getDataframe(properties,glcm,index=filename,intensity=value,RB=RB)
     output_filename = f'GLCM_SobelFeature_ALL_sky_{day}dis3_ang45_test_.csv'
     output_path = os.path.join(r'C:\Users\ASUS\Documents\NARIT_internship_data\CSV_dataset_sobel\Dataset_12_2023', output_filename)

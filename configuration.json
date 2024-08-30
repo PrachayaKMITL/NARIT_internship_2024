@@ -3,8 +3,9 @@
     "parameters": {
       "start_date": "2024-01-01",
       "size": [285, 200],
-      "mask": "mask_delete_5.png",
-      "timezone": 7
+      "mask": "mask_chile.png",
+      "timezone": -4,
+      "location": [-30.16776,-70.80516]
     },
     "paths": {
       "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",
@@ -17,7 +18,8 @@
       "start_date": "2024-01-01",
       "size": [285, 200],
       "mask": "mask_delete_5.png",
-      "timezone": 7
+      "timezone": 7,
+      "location": [18.849417,98.9538]
     },
     "paths": {
       "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",
@@ -30,7 +32,8 @@
       "start_date": "2024-01-01",
       "size": [285, 200],
       "mask": "mask_delete_5.png",
-      "timezone": 7
+      "timezone": 8,
+      "location": [26.69547,100.03103]
     },
     "paths": {
       "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",

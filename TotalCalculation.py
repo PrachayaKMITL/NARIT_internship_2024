@@ -45,12 +45,12 @@ class SunPosition:
         sunrise = 12 - (1 / 15) * np.degrees(np.arccos(-argument)) - (TC / 60)
         sunset = 12 + (1 / 15) * np.degrees(np.arccos(-argument)) - (TC / 60)
         return sunrise,sunset
-    def SunriseSunset(self,filename:int,start_date,include_end_date:bool):
+    def SunriseSunset(self,location:list,filename:int,start_date,Time_zone:int,include_end_date:bool):
         start_date = start_date
-        end_date = str(timeConvertion().ticks_to_datetime(ticks=filename,time_zone=7).date())
-        location = [18.849417,98.9538]
+        end_date = str(timeConvertion().ticks_to_datetime(ticks=filename,time_zone=Time_zone).date())
+        location = location
         days = timeConvertion().time_duration(start_date,end_date,include_end_date=include_end_date).days
-        LSTM = SunPosition.LSTM(time_zone_offset=7)
+        LSTM = SunPosition.LSTM(time_zone_offset=Time_zone)
         EoT = SunPosition.calculate_EoT(day=days)
         TC = SunPosition.TimeCorrectionFactor(Longitude=location[1],LSTM=LSTM,EoT=EoT)
         dec = SunPosition.declination(day=days)

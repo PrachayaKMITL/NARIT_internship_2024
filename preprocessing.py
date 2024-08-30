@@ -94,7 +94,9 @@ class preprocessData:
             dataframe['Red channel'] = [np.mean(i) for i in RB[0]]
             dataframe['Blue channel'] = [np.mean(i) for i in RB[1]]
         return dataframe
-
+    def computeGlcmsingle(self,image,distance,angle):
+        glcm = graycomatrix(image,distance,angle)
+        return glcm
     def computeGlcm(self,image:list,distance,angle):
         glcm = []
         for i in image:
@@ -115,12 +117,12 @@ class image:
         extract_name = lambda x : int(os.path.splitext(os.path.basename(x))[0])
         filetime = [extract_name(i) for i in filename]
         return filetime
-    def extract_filename(filename:list,sunrise:float,sunset:float):
+    def extract_filename(filename:list,sunrise:float,sunset:float, time_zone:int):
         extract_name = lambda x : int(os.path.splitext(os.path.basename(x))[0])
         filtering = lambda x : (x > sunrise) & (x < sunset)
 
         filetime = [extract_name(i) for i in filename]
-        decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=7)) for t in filetime]
+        decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=time_zone)) for t in filetime]
         day_indices = [index for index, value in enumerate(decimal) if filtering(value)]
         night_indices = [index for index, value in enumerate(decimal) if not filtering(value)]
         Day_filename = [filename[i] for i in day_indices]
@@ -130,26 +132,25 @@ class image:
 class thresholding:
     def __init__(self):
         pass
-#    def RBratioNight(self,input):
-#        final = []
-#        value= []
-#        chan_b = []
-#        chan_r = []
-#        e = 1e-11
-#        threshold = preprocessData.Threshold(input)
-#        for i in input:
-#            R,_,B = cv2.split(i)
-#            B = B+e
-#            chan_b.append(np.mean(B))
-#            chan_r.append(np.mean(R))
-#            if intensity < threshold:
-#                ratio = cv2.convertScaleAbs(ratio)
-#                final_mask = cv2.threshold(ratio, intensity/8, 255, cv2.THRESH_BINARY)[1]
-#               masked = cv2.bitwise_and(i,i,mask=final_mask)
-#               masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)*2
-#        chan_r = np.array(chan_r).reshape(-1,1)
-#        chan_b = np.array(chan_b).reshape(-1,1)
-#        return final,value,RB.T
+    def RBratiosingle(self,input,filename,sunrise,sunset):
+        filtering = lambda x : (x > sunrise) & (x < sunset)
+        decimal = timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=filename,time_zone=7))
+        if filtering(decimal):
+            R,_,B = cv2.split(input)
+            intensity = np.mean(B)
+            ratio = np.log1p(R / (B + 1e-5)) * 1.2
+            ratio = cv2.convertScaleAbs(ratio)
+            _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            masked = cv2.bitwise_and(input,input,mask=final_mask)
+            masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
+        if not filtering(decimal):
+            R,_,B = cv2.split(input)
+            ratio = np.log1p(R / (B + 1e-5)) * 1.2
+            ratio = cv2.convertScaleAbs(ratio)
+            _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            masked = cv2.bitwise_and(input,input,mask=final_mask)
+            masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
+        return masked_gray
     def RBratio(self,input,filename,sunrise,sunset):
         final = []
         value= []
@@ -181,7 +182,7 @@ class thresholding:
             chan_b.append(np.mean(B))
             chan_r.append(np.mean(R))
             intensity = np.mean(B)
-            ratio = np.log1p(R / (B + 1e-5)) * 2.2
+            ratio = np.log1p(R / (B + 1e-5)) * 1.2
             ratio = cv2.convertScaleAbs(ratio)
             _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(i,i,mask=final_mask)

@@ -11,13 +11,17 @@ from preprocessing import image
 sky_cam = str(input("Enter configuration selection(Chile,Astropark,China) : "))
 with open("configuration.json", 'r') as config_file:
     config = json.load(config_file)
-print(f"Current selection {sky_cam}")
+print(f"Current selection '{sky_cam}'")
 # Extract parameters from the config file
 start_date = config[sky_cam]['parameters']['start_date']
 image_size = config[sky_cam]['parameters']['size']
 mask_path = config[sky_cam]['parameters']['mask']
 timezone = config[sky_cam]['parameters']['timezone']
-
+location = config[sky_cam]['parameters']['location']
+print("Start date : ", start_date)
+print("Time zone : ", timezone)
+print("Mask path : ", mask_path)
+print(f"Location : {location[0]}°N {location[1]}°E")
 # Extract paths from the config file
 output_dir = config[sky_cam]['paths']['output_directory']
 kmean_model_path = config[sky_cam]['paths']['kmean_model']
@@ -39,7 +43,7 @@ for i in image_list:
     m += 1
     time = int(os.path.splitext(os.path.basename(i))[0])
     warnings.filterwarnings("ignore")
-    sunrise, sunset = SunPosition().SunriseSunset(filename=time, start_date=start_date, include_end_date=True)
+    sunrise, sunset = SunPosition().SunriseSunset(location=location,filename=time, start_date=start_date,Time_zone=timezone, include_end_date=True)
     output = pred.total_prediction(image_path=i, mask_path=mask_path, sunrise=sunrise, sunset=sunset, kmeans=kmean, miniBatchesKmeans=minik)
     time = int(os.path.splitext(os.path.basename(i))[0])
     time = tim.ticks_to_datetime(time, time_zone=timezone)
@@ -49,7 +53,7 @@ for i in image_list:
     img = cv2.imread(i)
     raw = viz.image_to_base64(img)
     raw_final = viz.image_html(raw, size=image_size)
-    image_base64 = viz.image_to_base64(output[4][0])
+    image_base64 = viz.image_to_base64(output[4])
     final_image_html = viz.image_html(image_base64, size=[200,200])
     result.append([time, output[0][0], output[1][0], output[2], output[3], clarity, raw_final, final_image_html])
     d_out = pd.DataFrame({
@@ -67,6 +71,7 @@ df_out = pd.DataFrame(data=result, columns=['Time', 'Kmean_clustering', 'GMM_clu
                                             'Sky clarity (%)', 'Raw image', 'Final image'])
 
 df_out.to_html(os.path.join(output_dir, "Output.html"), index=False, escape=False, justify='center')
+df_out.drop(columns=['Final image','Raw image'])
 df_out.to_csv(os.path.join(output_dir, "output.csv"))
 
 print("-----------Writing complete----------")
