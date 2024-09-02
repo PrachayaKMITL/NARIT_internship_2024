@@ -27,10 +27,10 @@ for folder in folders:
     folder = os.path.join(path,folder)
     images,filename = preprocessData().load_images_and_preprocess(folder,mask=mask,apply_crop_sun=True)
     sunrise,sunset = SunPosition().SunriseSunset(filename=filename[50],location=location,Time_zone=time_zone,start_date=start_date,include_end_date=True)
-    masked,value,RB = thresholding().RBratio(input=images,filename=filename,sunrise=sunrise,sunset=sunset)
+    masked,value,RB,skewness = thresholding().RBratio(input=images,filename=filename,sunrise=sunrise,sunset=sunset)
     #grad = preprocessData().Edging(input=masked,ker_size=7,cliplimit=40,gridsize=14,bias=50)
     glcm = preprocessData().computeGlcm(image=masked,distance=[3],angle=[45])
-    df = preprocessData().getDataframe(properties,glcm,index=filename,intensity=value,RB=RB)
+    df = preprocessData().getDataframe(properties,glcm,index=filename,intensity=value,RB=RB,skewness=skewness)
     output_filename = f'GLCM_SobelFeature_ALL_sky_{day}dis3_ang45_test_.csv'
     output_path = os.path.join(r'C:\Users\ASUS\Documents\NARIT_internship_data\CSV_dataset\Dataset_12_2023', output_filename)
     print(f"---File {day} write complete---")

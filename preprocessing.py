@@ -28,7 +28,12 @@ class preprocessData:
         except:
             pass
         return img
-    
+    def calculate_skewness(self,data):
+        n = len(data)
+        mean = np.mean(data)
+        std_dev = np.std(data, ddof=1)  # Using ddof=1 for sample standard deviation
+        skewness = (n / ((n - 1) * (n - 2))) * np.sum(((data - mean) / std_dev) ** 3)
+        return skewness
     def crop_center(self,img, crop_size=570):
         h, w = img.shape[:2]
         start_x = (w - crop_size) // 2
@@ -81,7 +86,7 @@ class preprocessData:
             _,thresh = cv2.threshold(gre,0,255,cv2.THRESH_TOZERO)
             grad.append(cv2.convertScaleAbs(thresh))
         return grad
-    def getDataframe(self,property:list,gray_level,index:list,intensity,RB):
+    def getDataframe(self,property:list,gray_level,index:list,intensity,RB,skewness):
         dataset = {
             prop : [] for prop in property
         }
@@ -93,6 +98,8 @@ class preprocessData:
             dataframe['intensity'] = [np.mean(i) for i in intensity]
             dataframe['Red channel'] = [np.mean(i) for i in RB[0]]
             dataframe['Blue channel'] = [np.mean(i) for i in RB[1]]
+        if skewness:
+            dataframe['skewness'] = skewness
         return dataframe
     def computeGlcmsingle(self,image,distance,angle):
         glcm = graycomatrix(image,distance,angle)
@@ -156,6 +163,7 @@ class thresholding:
         value= []
         chan_b = []
         chan_r = []
+        skewness = []
         e = 1e-11
         filtering = lambda x : (x > sunrise) & (x < sunset)
         decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=7)) for t in filename]
@@ -176,6 +184,7 @@ class thresholding:
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
             final.append(masked_gray)
             value.append(intensity)
+            skewness.append(preprocessData().calculate_skewness(B))
         for i in night_input:
             R,_,B = cv2.split(i)
             B = B+e
@@ -189,7 +198,9 @@ class thresholding:
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
             final.append(masked_gray)
             value.append(intensity)
+            skewness.append(preprocessData().calculate_skewness(B))
         chan_r = np.array(chan_r).reshape(-1,1)
         chan_b = np.array(chan_b).reshape(-1,1)
+        skewness = np.array(skewness).reshape(-1,1)
         RB = np.concatenate((chan_r,chan_b),axis=1)
-        return final,value,RB.T
+        return final,value,RB.T,skewness
