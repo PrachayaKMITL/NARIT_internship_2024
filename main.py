@@ -78,5 +78,5 @@ df_out.to_csv(os.path.join(output_dir, f"{sky_cam}_Output.csv"))
 
 print("-----------Writing complete----------\n")
 print(f"Runtime : {timer.time() - start} Seconds")
-timer.sleep(10)
-os.system('cls')
+if str(input("Clear console? (yes/no) : ")) == 'yes':
+    os.system('cls')

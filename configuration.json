@@ -8,9 +8,9 @@
       "location": [-30.16776,-70.80516]
     },
     "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",
-      "kmean_model": "models\\kmean_model_7.pkl",
-      "minik_model": "models\\miniBkmean_model_7.pkl"
+      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Chile",
+      "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+      "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
     }
   },
     "Astropark": {
@@ -22,9 +22,9 @@
       "location": [18.849417,98.9538]
     },
     "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",
-      "kmean_model": "models\\kmean_model_7.pkl",
-      "minik_model": "models\\miniBkmean_model_7.pkl"
+      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
+      "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+      "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
     }
   },
     "China": {
@@ -36,9 +36,9 @@
       "location": [26.69547,100.03103]
     },
     "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML",
-      "kmean_model": "models\\kmean_model_7.pkl",
-      "minik_model": "models\\miniBkmean_model_7.pkl"
+      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\China",
+      "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+      "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
     }
   }
 }
