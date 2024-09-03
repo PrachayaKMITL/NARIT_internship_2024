@@ -1,3 +1,5 @@
+from code import interact
+import statistics
 import numpy as np
 import cv2
 import os
@@ -42,7 +44,6 @@ class preprocessData:
         end_y = start_y + crop_size
         cropped_img = img[start_y:end_y, start_x:end_x]
         return cropped_img
-
     def Threshold(self,image):
         inten = []
         for i in image:
@@ -64,7 +65,6 @@ class preprocessData:
             images.append(img)
             name.append(int(os.path.splitext(os.path.basename(filename))[0]))
         return images,name
-
     def load_single_image(self,path:str,mask:str,apply_crop_sun:bool,crop_size:int):
         images = []
         name = []
@@ -86,7 +86,7 @@ class preprocessData:
             _,thresh = cv2.threshold(gre,0,255,cv2.THRESH_TOZERO)
             grad.append(cv2.convertScaleAbs(thresh))
         return grad
-    def getDataframe(self,property:list,gray_level,index:list,intensity,RB,skewness):
+    def getDataframe(self,property:list,gray_level,index:list,intensity,statistical):
         dataset = {
             prop : [] for prop in property
         }
@@ -94,12 +94,14 @@ class preprocessData:
             for prop in property:
                 dataset[prop].append(graycoprops(i, prop).flatten()[0])
         dataframe = pd.DataFrame(data=dataset,index=index)
-        if intensity:
+        if intensity is not None:
             dataframe['intensity'] = [np.mean(i) for i in intensity]
-            dataframe['Red channel'] = [np.mean(i) for i in RB[0]]
-            dataframe['Blue channel'] = [np.mean(i) for i in RB[1]]
-        if skewness:
-            dataframe['skewness'] = skewness
+        if statistical is not None:
+            dataframe['Red channel'] = [np.mean(i) for i in statistical[3]]
+            dataframe['Blue channel'] = [np.mean(i) for i in statistical[4]]
+            dataframe['skewness'] = statistical[0]
+            dataframe['std'] = statistical[1]
+            dataframe['different(R-B)'] = statistical[2]
         return dataframe
     def computeGlcmsingle(self,image,distance,angle):
         glcm = graycomatrix(image,distance,angle)
@@ -150,23 +152,33 @@ class thresholding:
             _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(input,input,mask=final_mask)
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
+            skewness = preprocessData().calculate_skewness(B)
+            std = np.std(B)
+            diff = np.mean(R-B)
         if not filtering(decimal):
             R,_,B = cv2.split(input)
+            intensity = np.mean(B)
             ratio = np.log1p(R / (B + 1e-5)) * 0.92
             ratio = cv2.convertScaleAbs(ratio)
             _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(input,input,mask=final_mask)
             masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
-        return masked_gray
-    def RBratio(self,input,filename,sunrise,sunset):
+            skewness = preprocessData().calculate_skewness(B)
+            std = np.std(B)
+            diff = np.mean(R-B)
+        statistical = [skewness,std,diff,[R],[B]]
+        return masked_gray,intensity,statistical
+    def RBratio(self,input,filename,Time_zone,sunrise,sunset):
         final = []
         value= []
         chan_b = []
         chan_r = []
         skewness = []
+        std = []
+        diff = []
         e = 1e-11
         filtering = lambda x : (x > sunrise) & (x < sunset)
-        decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=7)) for t in filename]
+        decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=Time_zone)) for t in filename]
         day_indices = [index for index, value in enumerate(decimal) if filtering(value)]
         night_indices = [index for index, value in enumerate(decimal) if not filtering(value)]
         day_input = [input[i] for i in day_indices]
@@ -185,6 +197,8 @@ class thresholding:
             final.append(masked_gray)
             value.append(intensity)
             skewness.append(preprocessData().calculate_skewness(B))
+            std.append(np.std(B))
+            diff.append(np.mean(R-B))
         for i in night_input:
             R,_,B = cv2.split(i)
             B = B+e
@@ -199,8 +213,12 @@ class thresholding:
             final.append(masked_gray)
             value.append(intensity)
             skewness.append(preprocessData().calculate_skewness(B))
+            std.append(np.std(B))
+            diff.append(np.mean(R-B))
         chan_r = np.array(chan_r).reshape(-1,1)
         chan_b = np.array(chan_b).reshape(-1,1)
         skewness = np.array(skewness).reshape(-1,1)
-        RB = np.concatenate((chan_r,chan_b),axis=1)
-        return final,value,RB.T,skewness
+        std = np.array(std).reshape(-1,1)
+        diff = np.array(diff).reshape(-1,1)
+        statistical = np.concatenate((skewness,std,diff,chan_r,chan_b),axis=1)
+        return final,value,statistical.T

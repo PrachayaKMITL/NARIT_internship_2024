@@ -52,19 +52,19 @@ class prediction:
         mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
         mask = preprocessData().crop_center(mask, crop_size=crop_size)
         images, filename = preprocessData().load_single_image(image_path, mask=mask, crop_size=crop_size, apply_crop_sun=True)
-        final = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
+        final,intensity,_ = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
         glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
-        test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename, intensity=None, RB=None)
+        test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=None, statistical=None)
         x = test.drop(columns=['correlation'])
         predict_1 = kmeans.predict(x)
         predict_2 = miniBatchesKmeans.predict(x)
         cloud_ratio = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio)
-        return [predict_1,predict_2,cloud_ratio,sky_status,final]
-    def weighted_prediction(self,weight:None,predicted_result:list, cloud_percent:float,sky_status=None):
+        return [predict_1,predict_2,cloud_ratio,sky_status,final,intensity]
+    def weighted_prediction(self,weight:None,predicted_result:list,intensity,cloud_percent:float,sky_status=None):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
-        risk_factor =  (((predicted_result[0]+predicted_result[1])*2)+cloud_percent)/116*100
+        risk_factor =  ((min(predicted_result[0],predicted_result[1])*2)+cloud_percent+intensity)/(108+intensity)*100
         return risk_factor
 class visualizer:
     def __init__(self):
