@@ -27,6 +27,20 @@
       "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
     }
   },
+  "Astropark_december": {
+    "parameters": {
+      "start_date": "2024-01-01",
+      "size": [285, 200],
+      "mask": "mask_122023.png",
+      "timezone": 7,
+      "location": [18.849417,98.9538]
+    },
+    "paths": {
+      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
+      "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+      "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
+    }
+  },
     "China": {
     "parameters": {
       "start_date": "2024-01-01",

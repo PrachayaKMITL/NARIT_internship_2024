@@ -41,11 +41,20 @@ class prediction:
         area = cv2.countNonZero(image)
         mask = cv2.countNonZero(mask)
         return area / mask * 100
-
     def classify_sky(self, cloud_percentage):
-        oktas = (cloud_percentage/100)*8
-        return str(f"{round(oktas)} oktas")
-
+        oktas = round((cloud_percentage / 100) * 8)
+        classifications = {
+            0: "Clear sky",
+            1: "Few clouds",
+            2: "Few clouds",
+            3: "Partly cloudy",
+            4: "Partly cloudy",
+            5: "Mostly cloudy",
+            6: "Mostly cloudy",
+            7: "Cloudy",
+            8: "Overcast"
+        }
+        return f"{classifications.get(oktas, 'Invalid cloud percentage')} ({oktas} okta{'s' if oktas != 1 else ''})"
     def total_prediction(self, image_path, mask_path, crop_size=570, properties=None,sunrise=None,sunset=None,kmeans=None, miniBatchesKmeans=None):
         if properties is None:
             properties = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']

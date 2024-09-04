@@ -9,7 +9,7 @@ from ClassPrediction import prediction, visualizer
 from TotalCalculation import timeConvertion, SunPosition
 from preprocessing import image
 
-sky_cam = str(input("Enter configuration selection(Chile,Astropark,China) : "))
+sky_cam = str(input("Enter configuration selection(Chile,Astropark,Astropark_december,China) : "))
 with open("configuration.json", 'r') as config_file:
     config = json.load(config_file)
 print(f"Location : '{sky_cam}'")
