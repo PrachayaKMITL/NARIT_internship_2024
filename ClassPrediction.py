@@ -48,24 +48,36 @@ class prediction:
         # Classifications based on oktas value
         classifications = {
             0: "Clear sky",
-            1: "Few clouds",
+            1: "Fewer clouds",
             2: "Few clouds",
-            3: "Partly cloudy",
-            4: "Partly cloudy",
-            5: "Mostly cloudy",
-            6: "Mostly cloudy",
-            7: "Cloudy",
+            3: "Scatter",
+            4: "Mostly Scatter",
+            5: "Partly Broken",
+            6: "Mostly Broken",
+            7: "Broken",
             8: "Overcast"
         }
         
         # If oktas is "Overcast" (i.e., 8) and std is lower than 60, classify as "High cloud"
         if oktas == 8 and std < 70:
-            classification = "High cloud"
+            classification = "Thin cloud"
         else:
             classification = classifications.get(oktas, 'Invalid cloud percentage')
 
         return f"{classification} ({oktas} okta{'s' if oktas != 1 else ''})"
-
+    def sky_status(self,cloud_percent):
+        if cloud_percent < 15:
+            return "Clear"
+        elif cloud_percent < 30:
+            return "Mostly clear"
+        elif cloud_percent < 52:
+            return "Partly cloudy"
+        elif cloud_percent < 82:
+            return "Mostly Cloudy"
+        elif cloud_percent < 92:
+            return "Cloudy"
+        else:
+            return "Overcast"
     def total_prediction(self, image_path, mask_path, crop_size=570, properties=None,sunrise=None,sunset=None,kmeans=None, miniBatchesKmeans=None):
         if properties is None:
             properties = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']

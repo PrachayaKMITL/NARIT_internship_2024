@@ -3,7 +3,7 @@
     "parameters": {
       "start_date": "2024-01-01",
       "size": [285, 200],
-      "mask": "mask_chile.png",
+      "mask": "masks\\mask_chile.png",
       "timezone": -4,
       "location": [-30.16776,-70.80516]
     },
@@ -17,7 +17,7 @@
     "parameters": {
       "start_date": "2024-01-01",
       "size": [285, 200],
-      "mask": "mask_delete_5.png",
+      "mask": "masks\\mask_delete_5.png",
       "timezone": 7,
       "location": [18.849417,98.9538]
     },
@@ -29,9 +29,9 @@
   },
   "Astropark_december": {
     "parameters": {
-      "start_date": "2024-01-01",
+      "start_date": "2023-01-01",
       "size": [285, 200],
-      "mask": "mask_122023.png",
+      "mask": "masks\\mask_122023.png",
       "timezone": 7,
       "location": [18.849417,98.9538]
     },
