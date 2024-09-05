@@ -57,13 +57,13 @@ for i in image_list:
     raw_final = viz.image_html(raw, size=image_size)
     image_base64 = viz.image_to_base64(output[4])
     final_image_html = viz.image_html(image_base64, size=[200,200])
-    result.append([time, output[0][0], output[1][0], output[2], output[3], clarity, raw_final, final_image_html]) 
+    result.append([time, int(output[0][0]), int(output[1][0]), output[2], output[3], clarity, raw_final, final_image_html]) 
     viz.progress_bar(m, leng, 100)
 
 print("\n---------Prediction complete---------")
 
 df_out = pd.DataFrame(data=result, columns=['Time', 'Kmean_clustering', 'Minibatch_kmean',
-                                            'Cloud_coverage %', 'Sky_status',
+                                            'Cloud_coverage %', 'Cloud_status',
                                             'Sky clarity (%)', 'Raw image', 'Final image'])
 
 df_out.to_html(os.path.join(output_dir, f"{sky_cam}_Output.html"), index=False, escape=False, justify='center')

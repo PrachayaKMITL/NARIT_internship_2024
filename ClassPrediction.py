@@ -35,14 +35,17 @@ class prediction:
         RB = np.concatenate((chan_r, chan_b), axis=1)
         return final, value, RB.T
 
-    def CloudRatio(self,image,mask):
+    def CloudRatio(self, image, mask):
         image = np.array(image)
         mask = np.array(mask)
         area = cv2.countNonZero(image)
         mask = cv2.countNonZero(mask)
-        return area / mask * 100
-    def classify_sky(self, cloud_percentage):
+        return area / mask * 100, np.std(image)
+
+    def classify_sky(self, cloud_percentage, std):
         oktas = round((cloud_percentage / 100) * 8)
+        
+        # Classifications based on oktas value
         classifications = {
             0: "Clear sky",
             1: "Few clouds",
@@ -54,7 +57,15 @@ class prediction:
             7: "Cloudy",
             8: "Overcast"
         }
-        return f"{classifications.get(oktas, 'Invalid cloud percentage')} ({oktas} okta{'s' if oktas != 1 else ''})"
+        
+        # If oktas is "Overcast" (i.e., 8) and std is lower than 60, classify as "High cloud"
+        if oktas == 8 and std < 70:
+            classification = "High cloud"
+        else:
+            classification = classifications.get(oktas, 'Invalid cloud percentage')
+
+        return f"{classification} ({oktas} okta{'s' if oktas != 1 else ''})"
+
     def total_prediction(self, image_path, mask_path, crop_size=570, properties=None,sunrise=None,sunset=None,kmeans=None, miniBatchesKmeans=None):
         if properties is None:
             properties = ['contrast', 'dissimilarity', 'homogeneity', 'energy', 'correlation', 'ASM']
@@ -67,8 +78,8 @@ class prediction:
         x = test.drop(columns=['correlation'])
         predict_1 = kmeans.predict(x)
         predict_2 = miniBatchesKmeans.predict(x)
-        cloud_ratio = self.CloudRatio(image=final,mask=mask)
-        sky_status = self.classify_sky(cloud_ratio)
+        cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
+        sky_status = self.classify_sky(cloud_ratio,std)
         return [predict_1,predict_2,cloud_ratio,sky_status,final,intensity]
     def weighted_prediction(self,weight:None,predicted_result:list,intensity,cloud_percent:float,sky_status=None):
         if weight is None:
