@@ -1,0 +1,46 @@
+{
+    "Astropark": {
+     "December":{
+        "parameters": {
+        "start_date": "2023-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_122023.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+        },
+        "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_old\\Dataset_12_2023",
+        "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+        "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
+        }
+     },
+     "June":{
+        "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_delete_5.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+        },
+        "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_old\\Dataset_06_2024",
+        "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+        "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
+        }
+     },
+     "April":{
+        "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_delete_5.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+        },
+        "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_old\\Dataset_04_2024",
+        "kmean_model": "models\\kmean_model_Nonesobel_match.pkl",
+        "minik_model": "models\\miniBkmean_model_Nonesobel_match.pkl"
+        }
+     } 
+    }
+}

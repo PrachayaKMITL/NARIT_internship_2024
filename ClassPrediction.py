@@ -66,15 +66,15 @@ class prediction:
 
         return f"{classification} ({oktas} okta{'s' if oktas != 1 else ''})"
     def sky_status(self,cloud_percent):
-        if cloud_percent < 15:
+        if cloud_percent < 18:
             return "Clear"
-        elif cloud_percent < 30:
+        elif cloud_percent < 37:
             return "Mostly clear"
-        elif cloud_percent < 52:
+        elif cloud_percent < 55:
             return "Partly cloudy"
-        elif cloud_percent < 82:
+        elif cloud_percent < 64:
             return "Mostly Cloudy"
-        elif cloud_percent < 92:
+        elif cloud_percent < 87:
             return "Cloudy"
         else:
             return "Overcast"
