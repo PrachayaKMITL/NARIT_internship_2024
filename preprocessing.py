@@ -147,7 +147,7 @@ class thresholding:
         if filtering(decimal):
             R,_,B = cv2.split(input)
             intensity = np.mean(B)
-            ratio = np.log1p(R / (B + 1e-5)) * 1.2
+            ratio = np.log1p(R / (B + 1e-5)) * 1.25
             ratio = cv2.convertScaleAbs(ratio)
             _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(input,input,mask=final_mask)
@@ -158,7 +158,7 @@ class thresholding:
         if not filtering(decimal):
             R,_,B = cv2.split(input)
             intensity = np.mean(B)
-            ratio = np.log1p(R / (B + 1e-5)) * 0.92
+            ratio = np.log1p(R / (B + 1e-5)) * 0.9
             ratio = cv2.convertScaleAbs(ratio)
             _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             masked = cv2.bitwise_and(input,input,mask=final_mask)

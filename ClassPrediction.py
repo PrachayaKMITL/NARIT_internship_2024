@@ -41,7 +41,11 @@ class prediction:
         area = cv2.countNonZero(image)
         mask = cv2.countNonZero(mask)
         return area / mask * 100, np.std(image)
-
+    def octas(self, cloud_percentage,std):
+        oktas = round((cloud_percentage / 100) * 8)
+        if oktas == 8 and std < 68:
+            return "Thin cloud(9 octas)"
+        return f"{oktas} oktas"
     def classify_sky(self, cloud_percentage, std):
         oktas = round((cloud_percentage / 100) * 8)
         
@@ -91,7 +95,7 @@ class prediction:
         predict_1 = kmeans.predict(x)
         predict_2 = miniBatchesKmeans.predict(x)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
-        sky_status = self.classify_sky(cloud_ratio,std)
+        sky_status = self.octas(cloud_ratio,std)
         return [predict_1,predict_2,cloud_ratio,sky_status,final,intensity]
     def weighted_prediction(self,weight:None,predicted_result:list,intensity,cloud_percent:float,sky_status=None):
         if weight is None:
