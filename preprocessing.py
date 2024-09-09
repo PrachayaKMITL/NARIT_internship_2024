@@ -9,9 +9,17 @@ import shutil
 from skimage.feature import graycomatrix,graycoprops
 import pandas as pd
 from TotalCalculation import *
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 class preprocessData:
     def __init__(self):
         pass
+    def ScaledPCA(self,scaler,dataframe):
+        x = dataframe[['contrast','std','dissimilarity','ASM','energy']]
+        scaled = scaler.fit_transform(x)
+        #pca = PCA(n_components=components,svd_solver="full")
+        #principal = pca.fit_transform(scaled)
+        return scaled
     def cropSun(self,img):
         gray = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)    
         _, thresh = cv2.threshold(gray, 252, 255, cv2.THRESH_BINARY)

@@ -1,3 +1,4 @@
+from turtle import st
 import cv2
 import numpy as np
 from preprocessing import *
@@ -88,12 +89,12 @@ class prediction:
         mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
         mask = preprocessData().crop_center(mask, crop_size=crop_size)
         images, filename = preprocessData().load_single_image(image_path, mask=mask, crop_size=crop_size, apply_crop_sun=True)
-        final,intensity,_ = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
+        final,intensity,stat = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
         glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
-        test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=None, statistical=None)
-        x = test.drop(columns=['correlation'])
-        predict_1 = kmeans.predict(x)
-        predict_2 = miniBatchesKmeans.predict(x)
+        test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=[intensity], statistical=stat)
+        scaled = preprocessData().ScaledPCA(scaler=StandardScaler(with_mean=False),dataframe=test)
+        predict_1 = kmeans.predict(scaled)
+        predict_2 = miniBatchesKmeans.predict(scaled)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
         sky_status = self.octas(cloud_ratio,std)
         return [predict_1,predict_2,cloud_ratio,sky_status,final,intensity]
