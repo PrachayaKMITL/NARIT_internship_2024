@@ -1,4 +1,5 @@
 from code import interact
+from re import S
 import statistics
 import numpy as np
 import cv2
@@ -11,12 +12,16 @@ import pandas as pd
 from TotalCalculation import *
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+import pickle
 class preprocessData:
     def __init__(self):
         pass
-    def ScaledPCA(self,scaler,dataframe):
+    def ScaledPCA(self,scaler_path,dataframe):
         x = dataframe[['contrast','std','dissimilarity','ASM','energy']]
-        scaled = scaler.fit_transform(x)
+        with open(scaler_path,'rb') as scaler_file:
+            scaler = pickle.load(scaler_file)
+        scaler.partial_fit(x)
+        scaled = scaler.transform(x)
         #pca = PCA(n_components=components,svd_solver="full")
         #principal = pca.fit_transform(scaled)
         return scaled

@@ -92,7 +92,7 @@ class prediction:
         final,intensity,stat = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
         glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
         test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=[intensity], statistical=stat)
-        scaled = preprocessData().ScaledPCA(scaler=StandardScaler(with_mean=False),dataframe=test)
+        scaled = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\standardScaler.pkl',dataframe=test)
         predict_1 = kmeans.predict(scaled)
         predict_2 = miniBatchesKmeans.predict(scaled)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
