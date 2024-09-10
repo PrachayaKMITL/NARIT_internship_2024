@@ -1,58 +1,118 @@
 {
-    "Chile": {
-    "parameters": {
-      "start_date": "2024-01-01",
-      "size": [285, 200],
-      "mask": "masks\\mask_chile.png",
-      "timezone": -4,
-      "location": [-30.16776,-70.80516]
+  "Day": {
+      "Chile": {
+      "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_chile.png",
+        "timezone": -4,
+        "location": [-30.16776,-70.80516]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Chile",
+        "kmean_model": "models\\kmean_model_5PCA.pkl",
+        "minik_model": "models\\miniBkmean_model_5PCA.pkl"
+      }
     },
-    "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Chile",
-      "kmean_model": "models\\kmean_model_3PCA.pkl",
-      "minik_model": "models\\miniBkmean_model_3PCA.pkl"
+      "Astropark": {
+      "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_delete_5.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
+        "kmean_model": "models\\kmean_model_5PCA.pkl",
+        "minik_model": "models\\miniBkmean_model_5PCA.pkl"
+      }
+    },
+    "Astropark_december": {
+      "parameters": {
+        "start_date": "2023-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_122023.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
+        "kmean_model": "models\\kmean_model_5PCA.pkl",
+        "minik_model": "models\\miniBkmean_model_5PCA.pkl"
+      }
+    },
+      "China": {
+      "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "mask_delete_5.png",
+        "timezone": 8,
+        "location": [26.69547,100.03103]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\China",
+        "kmean_model": "models\\kmean_model_5PCA.pkl",
+        "minik_model": "models\\miniBkmean_model_5PCA.pkl"
+      }
     }
   },
-    "Astropark": {
-    "parameters": {
-      "start_date": "2024-01-01",
-      "size": [285, 200],
-      "mask": "masks\\mask_delete_5.png",
-      "timezone": 7,
-      "location": [18.849417,98.9538]
+  "Night" :{
+      "Chile": {
+      "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_chile.png",
+        "timezone": -4,
+        "location": [-30.16776,-70.80516]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Chile",
+        "kmean_model": "models\\kmean_night_5fea.pkl",
+        "minik_model": "models\\miniBkmean_night_5fea.pkl"
+      }
     },
-    "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
-      "kmean_model": "models\\kmean_model_3PCA.pkl",
-      "minik_model": "models\\miniBkmean_model_3PCA.pkl"
-    }
-  },
-  "Astropark_december": {
-    "parameters": {
-      "start_date": "2023-01-01",
-      "size": [285, 200],
-      "mask": "masks\\mask_122023.png",
-      "timezone": 7,
-      "location": [18.849417,98.9538]
+      "Astropark": {
+      "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_delete_5.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
+        "kmean_model": "models\\kmean_night_5fea.pkl",
+        "minik_model": "models\\miniBkmean_night_5fea.pkl"
+      }
     },
-    "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
-      "kmean_model": "models\\kmean_model_3PCA.pkl",
-      "minik_model": "models\\miniBkmean_model_3PCA.pkl"
-    }
-  },
-    "China": {
-    "parameters": {
-      "start_date": "2024-01-01",
-      "size": [285, 200],
-      "mask": "mask_delete_5.png",
-      "timezone": 8,
-      "location": [26.69547,100.03103]
+    "Astropark_december": {
+      "parameters": {
+        "start_date": "2023-01-01",
+        "size": [285, 200],
+        "mask": "masks\\mask_122023.png",
+        "timezone": 7,
+        "location": [18.849417,98.9538]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\Astropark",
+        "kmean_model": "models\\kmean_night_5fea.pkl",
+        "minik_model": "models\\miniBkmean_night_5fea.pkl"
+      }
     },
-    "paths": {
-      "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\China",
-      "kmean_model": "models\\kmean_model_3PCA.pkl",
-      "minik_model": "models\\miniBkmean_model_3PCA.pkl"
+      "China": {
+      "parameters": {
+        "start_date": "2024-01-01",
+        "size": [285, 200],
+        "mask": "mask_delete_5.png",
+        "timezone": 8,
+        "location": [26.69547,100.03103]
+      },
+      "paths": {
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Output_HTML\\China",
+        "kmean_model": "models\\kmean_night_5fea.pkl",
+        "minik_model": "models\\miniBkmean_night_5fea.pkl"
+      }
     }
+   }
   }
-}

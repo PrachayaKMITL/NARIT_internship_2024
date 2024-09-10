@@ -16,15 +16,15 @@ import pickle
 class preprocessData:
     def __init__(self):
         pass
-    def ScaledPCA(self,scaler_path,dataframe):
-        x = dataframe[['contrast','std','dissimilarity','ASM','energy']]
+    def ScaledPCA(self,scaler_path,PCA_path,dataframe):
+        with open(PCA_path,'rb') as PCA_file:
+            pca = pickle.load(PCA_file)
         with open(scaler_path,'rb') as scaler_file:
             scaler = pickle.load(scaler_file)
-        scaler.partial_fit(x)
-        scaled = scaler.transform(x)
-        #pca = PCA(n_components=components,svd_solver="full")
-        #principal = pca.fit_transform(scaled)
-        return scaled
+        scaler.partial_fit(dataframe)
+        scaled = scaler.transform(dataframe)
+        principal = pca.transform(scaled)
+        return principal
     def cropSun(self,img):
         gray = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)    
         _, thresh = cv2.threshold(gray, 252, 255, cv2.THRESH_BINARY)

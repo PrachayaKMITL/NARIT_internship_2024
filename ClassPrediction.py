@@ -92,11 +92,11 @@ class prediction:
         final,intensity,stat = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
         glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
         test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=[intensity], statistical=stat)
-        scaled = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\standardScaler.pkl',dataframe=test)
-        predict_1 = kmeans.predict(scaled)
-        predict_2 = miniBatchesKmeans.predict(scaled)
+        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\standardScaler.pkl',PCA_path='models\\PCA\\PCA.pkl',dataframe=test)
+        predict_1 = kmeans.predict(principal)
+        predict_2 = miniBatchesKmeans.predict(principal)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
-        sky_status = self.octas(cloud_ratio,std)
+        sky_status = self.classify_sky(cloud_ratio,std)
         return [predict_1,predict_2,cloud_ratio,sky_status,final,intensity]
     def weighted_prediction(self,weight:None,predicted_result:list,intensity,cloud_percent:float,sky_status=None):
         if weight is None:

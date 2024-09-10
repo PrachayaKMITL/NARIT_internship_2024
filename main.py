@@ -9,25 +9,26 @@ from ClassPrediction import prediction, visualizer
 from TotalCalculation import timeConvertion, SunPosition
 from preprocessing import image
 
+Mode = str(input("Enter daytime mode (Day/Night) : "))
 sky_cam = str(input("Enter configuration selection(Chile,Astropark,Astropark_december,China) : "))
 with open("Configuration//configuration.json", 'r') as config_file:
-    config = json.load(config_file)
+    config = json.load(config_file) 
 print(f"Location : '{sky_cam}'")
 # Extract parameters from the config file
-start_date = config[sky_cam]['parameters']['start_date']
-image_size = config[sky_cam]['parameters']['size']
-mask_path = config[sky_cam]['parameters']['mask']
-timezone = config[sky_cam]['parameters']['timezone']
-location = config[sky_cam]['parameters']['location']
+start_date = config[Mode][sky_cam]['parameters']['start_date']
+image_size = config[Mode][sky_cam]['parameters']['size']
+mask_path = config[Mode][sky_cam]['parameters']['mask']
+timezone = config[Mode][sky_cam]['parameters']['timezone']
+location = config[Mode][sky_cam]['parameters']['location']
 print("Start date : ", start_date)
 print("Time zone : ", timezone)
 print("Mask path : ", mask_path)
 print(f"Coordinate : {location[0]}°N {location[1]}°E")
 print("#################################################")
 # Extract paths from the config file
-output_dir = config[sky_cam]['paths']['output_directory']
-kmean_model_path = config[sky_cam]['paths']['kmean_model']
-minik_model_path = config[sky_cam]['paths']['minik_model']
+output_dir = config[Mode][sky_cam]['paths']['output_directory']
+kmean_model_path = config[Mode][sky_cam]['paths']['kmean_model']
+minik_model_path = config[Mode][sky_cam]['paths']['minik_model']
 m = 0
 with open(kmean_model_path, 'rb') as file:
     kmean = pickle.load(file)
