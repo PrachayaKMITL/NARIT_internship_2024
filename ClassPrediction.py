@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
 import matplotlib.pyplot as plt
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import silhouette_score
+from sklearn.metrics import silhouette_score,pairwise_distances_argmin
 import base64
 
 class prediction:
@@ -64,7 +64,7 @@ class prediction:
         }
         
         # If oktas is "Overcast" (i.e., 8) and std is lower than 60, classify as "High cloud"
-        if oktas == 8 and std < 70:
+        if std < 70:
             classification = "Thin cloud"
         else:
             classification = classifications.get(oktas, 'Invalid cloud percentage')
@@ -95,14 +95,22 @@ class prediction:
         principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\standardScaler.pkl',PCA_path='models\\PCA\\PCA.pkl',dataframe=test)
         predict_1 = kmeans.predict(principal)
         predict_2 = miniBatchesKmeans.predict(principal)
+        predict_2_mapped = self.align_clusters_by_centroids(kmeans_model=kmeans,minik_model=miniBatchesKmeans,labels_minik=predict_2)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio,std)
-        return [predict_1,predict_2,cloud_ratio,sky_status,final,intensity]
+        return [predict_1,predict_2_mapped,cloud_ratio,sky_status,final,intensity]
     def weighted_prediction(self,weight:None,predicted_result:list,intensity,cloud_percent:float,sky_status=None):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
-        risk_factor =  ((min(predicted_result[0],predicted_result[1])*2)+cloud_percent+intensity)/(108+intensity)*100
+        risk_factor =  (cloud_percent+intensity)/(108+intensity)*100
         return risk_factor
+    def align_clusters_by_centroids(self,kmeans_model, minik_model, labels_minik):
+        centroids_model_1 = kmeans_model.cluster_centers_
+        centroids_model_2 = minik_model.cluster_centers_
+        matching_indices = pairwise_distances_argmin(centroids_model_1, centroids_model_2)
+        mapping = {i: matching_indices[i] for i in range(len(centroids_model_1))}
+        labels_model_2_mapped = [mapping[labels] for labels in labels_minik]
+        return labels_model_2_mapped
 class visualizer:
     def __init__(self):
         pass
@@ -142,7 +150,7 @@ class Evaluation:
         k=range(2,n)
         s = []
         for n_clusters in k:
-            clusters = KMeans(n_clusters=n_clusters,tol=1e-4, random_state=42, init='k-means++' ,n_init='auto', max_iter=500, algorithm='lloyd')
+            clusters = KMeans(init='random', n_clusters=k, n_init=10,random_state=42,tol=1e-4,max_iter=300,algorithm='lloyd')
             clusters.fit(data)
             labels = clusters.labels_
             centroids = clusters.cluster_centers_

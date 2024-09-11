@@ -9,7 +9,7 @@
         "location": [18.849417,98.9538]
         },
         "paths": {
-        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_old\\Dataset_12_2023",
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_2\\Dataset_12_2023",
         "kmean_model": "models\\miniBkmean_model_Nonesobel_match.pkl",
         "minik_model": "models\\kmean_model_Nonesobel_match.pkl"
         }
@@ -23,7 +23,7 @@
         "location": [18.849417,98.9538]
         },
         "paths": {
-        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_old\\Dataset_06_2024",
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_2\\Dataset_06_2024",
         "kmean_model": "models\\miniBkmean_model_Nonesobel_match.pkl",
         "minik_model": "models\\kmean_model_Nonesobel_match.pkl"
         }
@@ -37,7 +37,7 @@
         "location": [18.849417,98.9538]
         },
         "paths": {
-        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_old\\Dataset_04_2024",
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\CSV_dataset_2\\Dataset_04_2024",
         "kmean_model": "models\\miniBkmean_model_Nonesobel_match.pkl",
         "minik_model": "models\\kmean_model_Nonesobel_match.pkl"
         }
