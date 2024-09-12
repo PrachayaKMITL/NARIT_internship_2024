@@ -52,7 +52,7 @@ for i in image_list:
     time = tim.ticks_to_datetime(time, time_zone=timezone)
     time = time.strftime('%Y-%m-%d %H:%M')
     pred_t = [output[0], output[1]]
-    clarity = 100 - pred.weighted_prediction(weight=None, predicted_result=pred_t, cloud_percent=output[2], sky_status=output[3], intensity=output[4][0])[0]
+    clarity = 100 - pred.weighted_prediction(weight=None, cloud_percent=output[2], red_channel=output[5][3], Blue_channel=output[5][4])
     img = cv2.imread(i)
     raw = viz.image_to_base64(img)
     sky_status = prediction().sky_status(output[2])

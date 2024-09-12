@@ -16,11 +16,13 @@ import pickle
 class preprocessData:
     def __init__(self):
         pass
-    def ScaledPCA(self,scaler_path,PCA_path,dataframe):
+    def ScaledPCA(self,scaler_path,PCA_path,dataframe,Cleaner_path):
         with open(PCA_path,'rb') as PCA_file:
             pca = pickle.load(PCA_file)
         with open(scaler_path,'rb') as scaler_file:
             scaler = pickle.load(scaler_file)
+        with open(Cleaner_path,'rb') as Cleaner_file:
+            cleaner = pickle.load(Cleaner_file)
         scaler.partial_fit(dataframe)
         scaled = scaler.transform(dataframe)
         principal = pca.transform(scaled)

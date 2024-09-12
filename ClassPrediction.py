@@ -92,17 +92,17 @@ class prediction:
         final,intensity,stat = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
         glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
         test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=[intensity], statistical=stat)
-        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\standardScaler.pkl',PCA_path='models\\PCA\\PCA.pkl',dataframe=test)
+        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\standardScaler.pkl',Cleaner_path='models\\Cleaner\\IsolationFor.pkl',PCA_path='models\\PCA\\PCA.pkl',dataframe=test)
         predict_1 = kmeans.predict(principal)
         predict_2 = miniBatchesKmeans.predict(principal)
         predict_2_mapped = self.align_clusters_by_centroids(kmeans_model=kmeans,minik_model=miniBatchesKmeans,labels_minik=predict_2)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio,std)
-        return [predict_1,predict_2_mapped,cloud_ratio,sky_status,final,intensity]
-    def weighted_prediction(self,weight:None,predicted_result:list,intensity,cloud_percent:float,sky_status=None):
+        return [predict_1,predict_2_mapped,cloud_ratio,sky_status,final,stat]
+    def weighted_prediction(self,weight:None,red_channel,Blue_channel,cloud_percent:float):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
-        risk_factor =  (cloud_percent+intensity)/(108+intensity)*100
+        risk_factor =  (cloud_percent+(np.mean(red_channel[0])/np.mean(Blue_channel[0]))*100)/2
         return risk_factor
     def align_clusters_by_centroids(self,kmeans_model, minik_model, labels_minik):
         centroids_model_1 = kmeans_model.cluster_centers_
