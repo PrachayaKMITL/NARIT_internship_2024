@@ -16,15 +16,14 @@ import pickle
 class preprocessData:
     def __init__(self):
         pass
-    def ScaledPCA(self,scaler_path,PCA_path,dataframe,Cleaner_path):
+    def ScaledPCA(self,scaler_path,PCA_path,dataframe,Cleaner_path,drop_column):
+        X = dataframe.drop(columns=drop_column)
         with open(PCA_path,'rb') as PCA_file:
             pca = pickle.load(PCA_file)
         with open(scaler_path,'rb') as scaler_file:
             scaler = pickle.load(scaler_file)
-        with open(Cleaner_path,'rb') as Cleaner_file:
-            cleaner = pickle.load(Cleaner_file)
-        scaler.partial_fit(dataframe)
-        scaled = scaler.transform(dataframe)
+        scaler.partial_fit(X)
+        scaled = scaler.transform(X)
         principal = pca.transform(scaled)
         return principal
     def cropSun(self,img):
