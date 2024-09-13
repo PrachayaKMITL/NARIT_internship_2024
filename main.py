@@ -6,6 +6,7 @@ import warnings
 import os
 import time as timer 
 from ClassPrediction import prediction, visualizer
+import ClassPrediction
 from TotalCalculation import timeConvertion, SunPosition
 from preprocessing import image
 
@@ -54,19 +55,23 @@ for i in image_list:
     pred_t = [output[0], output[1]]
     clarity = 100 - pred.weighted_prediction(weight=None, cloud_percent=output[2], red_channel=output[5][3], Blue_channel=output[5][4])
     img = cv2.imread(i)
-    raw = viz.image_to_base64(img)
     sky_status = prediction().sky_status(output[2])
+    cv2.putText(output[4],f"Cloud percentage : {output[2]}",(20,40),cv2.FONT_HERSHEY_COMPLEX,
+                0.5,(255,255,255),1)
+    cv2.putText(output[4],f"Sky status : {sky_status}",(20,70),cv2.FONT_HERSHEY_COMPLEX,
+                0.5,(255,255,255),1)
+    raw = viz.image_to_base64(img)
     raw_final = viz.image_html(raw, size=image_size)
     image_base64 = viz.image_to_base64(output[4])
     final_image_html = viz.image_html(image_base64, size=[200,200])
-    result.append([time, int(output[0][0]), int(output[1][0]), output[2], output[3], clarity, sky_status, raw_final, final_image_html]) 
+    result.append([time, int(output[0][0]), int(output[1][0]), output[6],output[2], output[3], clarity, sky_status, raw_final, final_image_html]) 
     viz.progress_bar(m, leng, 100)
 
 print("\n---------Prediction complete---------")
 
-df_out = pd.DataFrame(data=result, columns=['Time', 'Kmean_clustering', 'Minibatch_kmean',
+df_out = pd.DataFrame(data=result, columns=['Time', 'Kmean_clustering', 'Minibatch_kmean','Confident',
                                             'Cloud_coverage %', 'Cloud_status',
-                                            'Sky clarity (%)', 'sky_status','Raw image', 'Final image'])
+                                            'Sky clarity (%)','sky_status','Raw image', 'Final image'])
 
 df_out.to_html(os.path.join(output_dir, f"{sky_cam}_Output.html"), index=False, escape=False, justify='center')
 df_out = df_out.drop(columns=['Final image','Raw image'])
@@ -76,3 +81,6 @@ print("-----------Writing complete----------\n")
 print(f"Runtime : {timer.time() - start} Seconds")
 if str(input("Clear console? (yes/no) : ")) == 'yes':
     os.system('cls')
+
+#Estimate Big O
+#O(n) = 0.088*n (seconds)

@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
 import matplotlib.pyplot as plt
 from sklearn.mixture import GaussianMixture
-from sklearn.metrics import silhouette_score,pairwise_distances_argmin
+from sklearn.metrics import silhouette_score,pairwise_distances_argmin,pairwise_distances
 import base64
 
 class prediction:
@@ -35,7 +35,10 @@ class prediction:
         chan_b = np.array(chan_b).reshape(-1, 1)
         RB = np.concatenate((chan_r, chan_b), axis=1)
         return final, value, RB.T
-
+    def confidentScore(self,label,cluster_center,principal):
+        dis = pairwise_distances(principal,[cluster_center[label]])
+        #confidence = (max(dis)-dis)/max(dis)*100
+        return 1-dis[0][0]
     def CloudRatio(self, image, mask):
         image = np.array(image)
         mask = np.array(mask)
@@ -97,10 +100,11 @@ class prediction:
                                                PCA_path='models\\PCA\\PCA_2.pkl',dataframe=test)
         predict_1 = kmeans.predict(principal)
         predict_2 = miniBatchesKmeans.predict(principal)
+        confidence = prediction().confidentScore(label=predict_1[0],cluster_center=kmeans.cluster_centers_,principal=principal)
         predict_2_mapped = self.align_clusters_by_centroids(kmeans_model=kmeans,minik_model=miniBatchesKmeans,labels_minik=predict_2)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio,std)
-        return [predict_1,predict_2_mapped,cloud_ratio,sky_status,final,stat]
+        return [predict_1,predict_2_mapped,cloud_ratio,sky_status,final,stat,confidence]
     def weighted_prediction(self,weight:None,red_channel,Blue_channel,cloud_percent:float):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
