@@ -24,7 +24,8 @@ class SunPosition:
         HRA = np.deg2rad(HRA)
         elevation = np.arcsin(np.sin(dec)*np.sin(latitude)+
                             np.cos(dec)*np.cos(latitude)*np.cos(HRA))
-        azimuth = np.arccos((np.sin(dec)*np.cos(latitude)-np.cos(dec)*np.sin(latitude)*np.cos(HRA))/np.cos(elevation))
+        azimuth = np.arccos((np.sin(dec)*np.cos(latitude)-np.cos(dec)*
+                             np.sin(latitude)*np.cos(HRA))/np.cos(elevation))
         if HRA > 0:
             azimuth = 360-np.degrees(azimuth)
         if HRA < 0:
