@@ -95,16 +95,16 @@ class prediction:
         final,intensity,stat = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
         glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
         test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=[intensity], statistical=stat)
-        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\MinMaxscaler.pkl',Cleaner_path='models\\Cleaner\\IsolationFor.pkl',
-                                               drop_column=['correlation','homogeneity','different(R-B)'],
-                                               PCA_path='models\\PCA\\PCA_2.pkl',dataframe=test)
+        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\Scaler_slide_3.pkl',Cleaner_path='models\\Cleaner\\IsolationFor.pkl',
+                                               drop_column=None,
+                                               PCA_path='models\\PCA\\PCA_slide_3.pkl',dataframe=test)
         predict_1 = kmeans.predict(principal)
         predict_2 = miniBatchesKmeans.predict(principal)
         confidence = prediction().confidentScore(label=predict_1[0],cluster_center=kmeans.cluster_centers_,principal=principal)
         predict_2_mapped = self.align_clusters_by_centroids(kmeans_model=kmeans,minik_model=miniBatchesKmeans,labels_minik=predict_2)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio,std)
-        return [predict_1,predict_2_mapped,cloud_ratio,sky_status,final,stat,confidence]
+        return [predict_1,predict_2,cloud_ratio,sky_status,final,stat,confidence]
     def weighted_prediction(self,weight:None,red_channel,Blue_channel,cloud_percent:float):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
@@ -112,7 +112,7 @@ class prediction:
         return risk_factor
     def align_clusters_by_centroids(self,kmeans_model, minik_model, labels_minik):
         centroids_model_1 = kmeans_model.cluster_centers_
-        centroids_model_2 = minik_model.cluster_centers_
+        centroids_model_2 = minik_model.means_
         matching_indices = pairwise_distances_argmin(centroids_model_1, centroids_model_2)
         mapping = {i: matching_indices[i] for i in range(len(centroids_model_1))}
         labels_model_2_mapped = [mapping[labels] for labels in labels_minik]

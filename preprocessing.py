@@ -17,7 +17,10 @@ class preprocessData:
     def __init__(self):
         pass
     def ScaledPCA(self,scaler_path,PCA_path,dataframe,Cleaner_path,drop_column):
-        X = dataframe.drop(columns=drop_column)
+        if drop_column is not None:
+            X = dataframe.drop(columns=drop_column)
+        else:
+            X = dataframe
         with open(PCA_path,'rb') as PCA_file:
             pca = pickle.load(PCA_file)
         with open(scaler_path,'rb') as scaler_file:
