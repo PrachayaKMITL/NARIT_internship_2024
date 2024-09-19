@@ -16,16 +16,16 @@ import pickle
 class preprocessData:
     def __init__(self):
         pass
-    def ScaledPCA(self,scaler_path,PCA_path,dataframe,Cleaner_path,drop_column):
-        if drop_column is not None:
-            X = dataframe.drop(columns=drop_column)
+    def ScaledPCA(self,scaler_path,PCA_path,dataframe,drop_column):
+        if drop_column:
+            X = dataframe.drop(columns=['homogeneity','skewness','Red channel','different(R-B)'])
         else:
             X = dataframe
         with open(PCA_path,'rb') as PCA_file:
             pca = pickle.load(PCA_file)
         with open(scaler_path,'rb') as scaler_file:
             scaler = pickle.load(scaler_file)
-        scaler.partial_fit(X)
+        #scaler.partial_fit(X)
         scaled = scaler.transform(X)
         principal = pca.transform(scaled)
         return principal

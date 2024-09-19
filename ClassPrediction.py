@@ -93,18 +93,17 @@ class prediction:
         mask = preprocessData().crop_center(mask, crop_size=crop_size)
         images, filename = preprocessData().load_single_image(image_path, mask=mask, crop_size=crop_size, apply_crop_sun=True)
         final,intensity,stat = thresholding().RBratiosingle(input=images[0],filename=filename[0],sunrise=sunrise,sunset=sunset)
-        glcm = [preprocessData().computeGlcmsingle(image=final, distance=[3], angle=[45])]
+        glcm = [preprocessData().computeGlcmsingle(image=final, distance=[2], angle=[0])]
         test = preprocessData().getDataframe(property=properties, gray_level=glcm, index=filename,intensity=[intensity], statistical=stat)
-        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\Scaler_slide_3.pkl',Cleaner_path='models\\Cleaner\\IsolationFor.pkl',
-                                               drop_column=None,
-                                               PCA_path='models\\PCA\\PCA_slide_3.pkl',dataframe=test)
+        principal = preprocessData().ScaledPCA(scaler_path='models\\Scaler\\Scaler_2_89.pkl',drop_column=True,
+                                               PCA_path='models\\PCA\\PCA_2_89.pkl',dataframe=test)
         predict_1 = kmeans.predict(principal)
-        predict_2 = miniBatchesKmeans.predict(principal)
+        #predict_2 = miniBatchesKmeans.predict(principal)
         confidence = prediction().confidentScore(label=predict_1[0],cluster_center=kmeans.cluster_centers_,principal=principal)
-        predict_2_mapped = self.align_clusters_by_centroids(kmeans_model=kmeans,minik_model=miniBatchesKmeans,labels_minik=predict_2)
+        #predict_2_mapped = self.align_clusters_by_centroids(kmeans_model=kmeans,minik_model=miniBatchesKmeans,labels_minik=predict_2)
         cloud_ratio,std = self.CloudRatio(image=final,mask=mask)
         sky_status = self.classify_sky(cloud_ratio,std)
-        return [predict_1,predict_2,cloud_ratio,sky_status,final,stat,confidence]
+        return [predict_1,[1],cloud_ratio,sky_status,final,stat,confidence]
     def weighted_prediction(self,weight:None,red_channel,Blue_channel,cloud_percent:float):
         if weight is None:
             weight = [0.5, 0.7, 0.7, 0.4]
@@ -156,7 +155,7 @@ class Evaluation:
         k=range(2,n)
         s = []
         for n_clusters in k:
-            clusters = KMeans(init='random', n_clusters=k, n_init=10,random_state=42,tol=1e-4,max_iter=300,algorithm='lloyd')
+            clusters = KMeans(init='k-means++', n_clusters=n_clusters, n_init='auto',random_state=42,tol=1e-4,max_iter=300,algorithm='lloyd')
             clusters.fit(data)
             labels = clusters.labels_
             centroids = clusters.cluster_centers_
