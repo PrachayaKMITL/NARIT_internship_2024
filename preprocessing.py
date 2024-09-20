@@ -13,6 +13,7 @@ from TotalCalculation import *
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import pickle
+
 class preprocessData:
     def __init__(self):
         pass
@@ -74,7 +75,7 @@ class preprocessData:
         name = []
         for filename in os.listdir(path):
             img = cv2.imread(os.path.join(path,filename))
-            img = img[(int(img.shape[0]/2)-270):int((img.shape[0]/2)+270),int((img.shape[1]/2)-290):int((img.shape[1]/2)+280)]
+            img = preprocessData().crop_center(img)
             img = cv2.bitwise_and(img,img,mask=mask)
             img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             if apply_crop_sun:

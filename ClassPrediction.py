@@ -67,7 +67,7 @@ class prediction:
         }
         
         # If oktas is "Overcast" (i.e., 8) and std is lower than 60, classify as "High cloud"
-        if std < 70:
+        if (std < 70) & (oktas == 8):
             classification = "Thin cloud"
         else:
             classification = classifications.get(oktas, 'Invalid cloud percentage')

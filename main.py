@@ -81,6 +81,5 @@ print("-----------Writing complete----------\n")
 print(f"Runtime : {timer.time() - start} Seconds")
 if str(input("Clear console? (yes/no) : ")) == 'yes':
     os.system('cls')
-
 #Estimate Big O
 #O(n) = 0.088*n (seconds)
