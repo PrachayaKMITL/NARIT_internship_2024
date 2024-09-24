@@ -197,42 +197,43 @@ class thresholding:
         e = 1e-11
         filtering = lambda x : (x > sunrise) & (x < sunset)
         decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t,time_zone=Time_zone)) for t in filename]
-        day_indices = [index for index, value in enumerate(decimal) if filtering(value)]
-        night_indices = [index for index, value in enumerate(decimal) if not filtering(value)]
-        day_input = [input[i] for i in day_indices]
-        night_input = [input[i] for i in night_indices]
-        for i in day_input:
-            R,_,B = cv2.split(i)
-            B = B+e
-            chan_b.append(np.mean(B))
-            chan_r.append(np.mean(R))
-            intensity = np.mean(B)
-            ratio = np.log1p(R / (B + 1e-5)) * 1.2
-            ratio = cv2.convertScaleAbs(ratio)
-            _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-            masked = cv2.bitwise_and(i,i,mask=final_mask)
-            masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
-            final.append(masked_gray)
-            value.append(intensity)
-            skewness.append(preprocessData().calculate_skewness(B))
-            std.append(np.std(B))
-            diff.append(np.mean(R-B))
-        for i in night_input:
-            R,_,B = cv2.split(i)
-            B = B+e
-            chan_b.append(np.mean(B))
-            chan_r.append(np.mean(R))
-            intensity = np.mean(B)
-            ratio = np.log1p(R / (B + 1e-5)) * 1.2
-            ratio = cv2.convertScaleAbs(ratio)
-            _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-            masked = cv2.bitwise_and(i,i,mask=final_mask)
-            masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
-            final.append(masked_gray)
-            value.append(intensity)
-            skewness.append(preprocessData().calculate_skewness(B))
-            std.append(np.std(B))
-            diff.append(np.mean(R-B))
+        #day_indices = [index for index, value in enumerate(decimal) if filtering(value)]
+        #night_indices = [index for index, value in enumerate(decimal) if not filtering(value)]
+        #day_input = [input[i] for i in day_indices]
+        #night_input = [input[i] for i in night_indices]
+        for i,dec in enumerate(decimal):
+            if filtering(dec):
+                R,_,B = cv2.split(input[i])
+                B = B+e
+                chan_b.append(np.mean(B))
+                chan_r.append(np.mean(R))
+                intensity = np.mean(B)
+                ratio = np.log1p(R / (B + 1e-5)) * 1.2
+                ratio = cv2.convertScaleAbs(ratio)
+                _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+                masked = cv2.bitwise_and(input[i],input[i],mask=final_mask)
+                masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
+                final.append(masked_gray)
+                value.append(intensity)
+                skewness.append(preprocessData().calculate_skewness(B))
+                std.append(np.std(B))
+                diff.append(np.mean(R-B))
+            else:
+                R,_,B = cv2.split(input[i])
+                B = B+e
+                chan_b.append(np.mean(B))
+                chan_r.append(np.mean(R))
+                intensity = np.mean(B)
+                ratio = np.log1p(R / (B + 1e-5)) * 1.2
+                ratio = cv2.convertScaleAbs(ratio)
+                _, final_mask = cv2.threshold(ratio, 2, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+                masked = cv2.bitwise_and(input[i],input[i],mask=final_mask)
+                masked_gray = cv2.cvtColor(masked,cv2.COLOR_RGB2GRAY)
+                final.append(masked_gray)
+                value.append(intensity)
+                skewness.append(preprocessData().calculate_skewness(B))
+                std.append(np.std(B))
+                diff.append(np.mean(R-B))
         chan_r = np.array(chan_r).reshape(-1,1)
         chan_b = np.array(chan_b).reshape(-1,1)
         skewness = np.array(skewness).reshape(-1,1)
