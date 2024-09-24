@@ -4,6 +4,12 @@ import datetime
 import numpy as np
 import cv2
 
+class CloudCalculation:
+    def __init__(self):
+        pass    
+    def showCloudRatio(self,images,mask,number):
+        image = images
+        return cv2.countNonZero(image[number])/cv2.countNonZero(mask)
 class SunPosition:
     def calculate_EoT(day):
         B = np.deg2rad(360/365*(day - 81))
