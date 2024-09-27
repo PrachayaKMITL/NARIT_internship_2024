@@ -24,5 +24,11 @@ I created some important method for further training and testing to evaluation o
     4. Use model from `training.py` then to use it in prediction.
 
 ## Prinmary source
-For all of this to happen, I would like to thanks to Scikit-learn developing team and Opencv team, who contribute many valuable
+    For all of this to happen, I would like to thanks to Scikit-learn developing team and Opencv team, who contribute many valuable
 methods for the program and create other functions
+
+## Disclaimers
+    This project is cross-language project. Since the model will be firstly deployed in Python, then use the deployed model in 
+C/C++, the model need feature extraction as we trained (I will provide this part in C)
+    Since the model use the different approach to result of 5 classes, the process needs additional feature extraction which is 
+not traditional CNN. I did think about feature extract using end-end Neural network, but since neural network model is also 

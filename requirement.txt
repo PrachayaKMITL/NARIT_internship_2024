@@ -11,3 +11,4 @@ os-sys==2.1.4
 python-dateutil==2.8.2
 ipython==8.12.0
 skl2onnx==1.14.0
+onnx==1.15.0
