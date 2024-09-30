@@ -1,6 +1,6 @@
 Hello, My name is Prachaya Makeragsakij from King Mongkut's institute of technology Ladkrabang
 
-    This is my internship project currently working in 2024 with NARIT.
+This is my internship project currently working in 2024 with NARIT.
 This project aim to create a working algorithm that is able to predict and classified of sky in each conditions
 we have seperate sky condition to 5 statuses.
 
@@ -14,7 +14,7 @@ These condition will use in data labeling and others operation. But since the mo
 
 ## Methodology
 
-    I've been working on the machine learning model, which I aim to present scalability and customability
+I've been working on the machine learning model, which I aim to present scalability and customability
 While I previously create an unsupervised model based on dataset generated from raw image data.
 I created some important method for further training and testing to evaluation of dataset in training and testing model, heres step of completing the model 
 
@@ -28,7 +28,9 @@ I created some important method for further training and testing to evaluation o
 methods for the program and create other functions
 
 ## Disclaimers
-    This project is cross-language project. Since the model will be firstly deployed in Python, then use the deployed model in 
+This project is cross-language project. Since the model will be firstly deployed in Python, then use the deployed model in 
 C/C++, the model need feature extraction as we trained (I will provide this part in C)
-    Since the model use the different approach to result of 5 classes, the process needs additional feature extraction which is 
-not traditional CNN. I did think about feature extract using end-end Neural network, but since neural network model is also 
+Since the model use the different approach to result of 5 classes, the process needs additional feature extraction which is 
+not traditional CNN. I did think about feature extract using end-end Neural network, but since neural network model is also need \
+a little bit of preprocessing that data before and give quite the same output this model could be a little bit cheaper considering 
+training customability and reduce time complexity.
