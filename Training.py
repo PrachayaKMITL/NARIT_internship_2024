@@ -1,8 +1,11 @@
+import onnx
 from sklearn.ensemble import RandomForestClassifier 
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split,cross_val_score
 from sklearn.metrics import confusion_matrix
 from skl2onnx import to_onnx
+import skl2onnx
+from skl2onnx.common.data_types import FloatTensorType
 import os
 import pandas as pd
 from ConstructDataset import Builddataset
@@ -60,18 +63,23 @@ scores = cross_val_score(estimator=clf,X=X_train,y=y_train)
 print("Cross-validation scores : ", scores)
 print("Mean accuracy : ", scores.mean())
 print("Execution time : ",time.time() - start)
-
+'''
+Save model in .onnx (Open Neural Network Exchange) 
+For the use in C please refer to www.onnx.ai for onnxruntime and skl2onnx
+'''
 save = input("Save model? (Y/n) : ")
 if (save == 'Y') or (save == 'y'):
-    onx = to_onnx(clf, X[:1])
+    initial_type = [('float_input', FloatTensorType([None, X_train.shape[1]]))]
+    onnx_model = skl2onnx.convert_sklearn(clf, initial_types=initial_type, target_opset=12)
     with open(r"C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\models\Classification_model\classifier_model.onnx", "wb") as f:
-        f.write(onx.SerializeToString())
+        f.write(onnx_model.SerializeToString())
     scaler_params = {
     "mean": scaler.mean_.tolist(),
     "scale": scaler.scale_.tolist()
 }
     with open(r'C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\models\Scaler\scaler_params.json', 'w') as f:
         json.dump(scaler_params, f, indent=4)
-
+if (str(input("Clear console ? (Y/n)")) == 'Y') or (str(input("Clear console ? (Y/n)")) == 'y'):
+    os.system('cls')
 
 

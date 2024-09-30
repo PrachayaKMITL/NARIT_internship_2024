@@ -24,7 +24,7 @@ I created some important method for further training and testing to evaluation o
     4. Use model from `training.py` then to use it in prediction.
 
 ## Prinmary source
-    For all of this to happen, I would like to thanks to Scikit-learn developing team and Opencv team, who contribute many valuable
+For all of this to happen, I would like to thanks to Scikit-learn developing team and Opencv team, who contribute many valuable
 methods for the program and create other functions
 
 ## Disclaimers

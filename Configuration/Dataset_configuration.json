@@ -23,7 +23,7 @@
         "location": [18.849417,98.9538]
         },
         "paths": {
-        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Categorical\\Clear",
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Categorical_night\\Clear",
         "kmean_model": "models\\miniBkmean_model_Nonesobel_match.pkl",
         "minik_model": "models\\kmean_model_Nonesobel_match.pkl"
         }
