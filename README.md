@@ -34,3 +34,5 @@ Since the model use the different approach to result of 5 classes, the process n
 not traditional CNN. I did think about feature extract using end-end Neural network, but since neural network model is also need \
 a little bit of preprocessing that data before and give quite the same output this model could be a little bit cheaper considering 
 training customability and reduce time complexity.
+
+## 

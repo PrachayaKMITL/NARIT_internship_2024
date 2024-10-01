@@ -1,2 +1,4 @@
 #ignore html
 *.html
+#ignore exe
+*.exe
