@@ -1,0 +1,19 @@
+{
+    "Parameters" :
+    {
+        "Kernel" : [
+            [1,-1,1],
+            [1,-1,1],
+            [1,-1,1]
+        ],
+        "Clahe_parameters" :{
+            "ClipLimit" : 0.01,
+            "GridSize" : 7
+        },
+        "iterations" :{
+            "dilate" : 1,
+            "erosion" : 2
+        }
+
+    }
+}
