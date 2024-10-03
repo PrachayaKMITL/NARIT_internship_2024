@@ -8,7 +8,7 @@ import skl2onnx
 from skl2onnx.common.data_types import FloatTensorType
 import os
 import pandas as pd
-from ConstructDataset import Builddataset
+from src.ConstructDataset import Builddataset
 import json
 import time
 
@@ -79,7 +79,7 @@ if (save == 'Y') or (save == 'y'):
 }
     with open(r'C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\models\Scaler\scaler_params.json', 'w') as f:
         json.dump(scaler_params, f, indent=4)
-if (str(input("Clear console ? (Y/n)")) == 'Y') or (str(input("Clear console ? (Y/n)")) == 'y'):
+if (str(input("Clear console ? (Y/n) : ")) == 'Y'):
     os.system('cls')
 
 

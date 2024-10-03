@@ -3,8 +3,9 @@ import json
 import pandas as pd
 import numpy as np
 import cv2
-from preprocessing import *
-from TotalCalculation import *
+
+from src.preprocessing import *
+from src.TotalCalculation import *
 sky_cam = str(input("Select images to train(Astropark : (December,April,June)) : "))
 with open("Configuration\\Dataset_configuration.json", 'r') as config_file:
     config = json.load(config_file)

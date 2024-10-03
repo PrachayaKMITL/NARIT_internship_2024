@@ -35,4 +35,5 @@ not traditional CNN. I did think about feature extract using end-end Neural netw
 a little bit of preprocessing that data before and give quite the same output this model could be a little bit cheaper considering 
 training customability and reduce time complexity.
 
-## 
+## Usage
+There're some function that is able to use in the 

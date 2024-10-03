@@ -1,31 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void read_jpeg(const char *filename) {
+void read_jpeg_file(const char *filename) {
+    // Open the file in binary mode
     FILE *file = fopen(filename, "rb");
-    if (!file) {
-        printf("Error opening file\n");
+    if (file == NULL) {
+        fprintf(stderr, "Error opening file %s\n", filename);
         return;
     }
 
-    // Example: Read the first two bytes to check for SOI marker (0xFFD8)
-    unsigned char marker[2];
-    fread(marker, 1, 2, file);
-    
-    if (marker[0] != 0xFF || marker[1] != 0xD8) {
-        printf("Not a valid JPEG file\n");
+    // Get file size
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    rewind(file);
+
+    // Allocate memory for the file content
+    unsigned char *buffer = (unsigned char *)malloc(file_size);
+    if (buffer == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
         fclose(file);
         return;
     }
 
-    // Continue parsing JPEG segments (DQT, DHT, SOS, etc.)
-    // This is where the complexity lies and would require more code...
+    // Read the file into the buffer
+    size_t bytes_read = fread(buffer, 1, file_size, file);
+    if (bytes_read != file_size) {
+        fprintf(stderr, "Error reading file\n");
+        free(buffer);
+        fclose(file);
+        return;
+    }
 
+    // For demonstration purposes, print the first few bytes of the JPEG file
+    printf("First few bytes of %s:\n", filename);
+    for (size_t i = 0; i < 10 && i < bytes_read; i++) {
+        printf("%02X ", buffer[i]);
+    }
+    printf("\n");
+
+    // Clean up
+    free(buffer);
     fclose(file);
 }
 
-int main() {
-    read_jpeg("C:/Users/ASUS/Downloads/History_Speeches_3031_Japan_Unconditional_Surrender_still_624x352.jpg");
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <image.jpg>\n", argv[0]);
+        return 1;
+    }
+
+    read_jpeg_file(argv[1]);
     return 0;
 }
 

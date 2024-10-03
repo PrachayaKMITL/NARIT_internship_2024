@@ -5,10 +5,10 @@ import cv2
 import warnings
 import os
 import time as timer 
-from ClassPrediction import prediction, visualizer
-import ClassPrediction
-from TotalCalculation import timeConvertion, SunPosition
-from preprocessing import image
+from src.ClassPrediction import prediction, visualizer
+import src.ClassPrediction
+from src.TotalCalculation import timeConvertion, SunPosition
+from src.preprocessing import image
 
 Mode = str(input("Enter daytime mode (Day/Night) : "))
 sky_cam = str(input("Enter configuration selection(Chile,Astropark,Astropark_december,China) : "))
