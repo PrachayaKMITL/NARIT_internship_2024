@@ -1,7 +1,7 @@
 from turtle import st
 import cv2
 import numpy as np
-from preprocessing import *
+from src.preprocessing import *
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
 import matplotlib.pyplot as plt
