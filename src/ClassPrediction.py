@@ -8,7 +8,19 @@ import matplotlib.pyplot as plt
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score,pairwise_distances_argmin,pairwise_distances
 import base64
+"""
+Class prediction
+    Combine alls of important functions for prediction in old-version (kmean clustering and GMM)
 
+RBsingle(input:Array) : Read image and seperate sky and cloud for single image
+Parameters:
+    input : Input image 
+Attributes:
+    final : Image of cloud after seperate sky out
+    value : Average intensity value of the image calculate from all channels
+    RB.T : Transpose of the matrix of average chanel R and channel B 
+
+"""
 class prediction:
     def __init__(self):
         pass
@@ -148,6 +160,26 @@ class visualizer:
         percent = percent*100
         print(f'\rProgress: [{arrow}{spaces}] {percent:.3f}%', end='')
 
+"""
+class evaluation is to store evaluation functions for older version (K-means clustering and GMM)
+
+silhoutte(data:Array,n:Int) : Applies Calculation of silhouette score by given n_cluster
+Parameters :
+    Data : Dataset to be fitted
+    n_clusters : number of maximum n_cluster to train
+Attributes:
+    None
+
+silhouette_GMM(data,max_n_clusters) : Applies calculation of silhouette score by given n_cluster until max_n_cluster
+Parameters :
+    data : Dataset to be fitted
+    max_n_cluster : number of maximum n_cluster to train
+
+evaluate_gmm_bic(data, max_n_cluster) : Applies calculation of BIC metrics of GMM clustering until max_n_cluster
+Parameters :
+    data : Dataset to fitted
+    max_n_cluster : number of maximum n_cluster for evaluation.
+"""
 class Evaluation:
     def __init__(self):
         pass

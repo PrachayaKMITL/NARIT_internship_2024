@@ -31,6 +31,15 @@ class preprocessData:
         principal = pca.transform(scaled)
         return principal
     def cropSun(self,img):
+        """
+        Mask sun and equivalent brightness out 
+
+        Parameters:
+        img (array) : Image to cut sun out
+
+        return:
+        img : Image with the sun crolp out
+        """
         gray = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)    
         _, thresh = cv2.threshold(gray, 252, 255, cv2.THRESH_BINARY)
         try:
@@ -49,6 +58,15 @@ class preprocessData:
             pass
         return img
     def calculate_skewness(self,data):
+        """
+        Calculate skewness of all data 
+
+        Parameters:
+        data (list) : Input dat for calculation
+
+        return:
+        skewness : Skewness value of the data 
+        """
         n = len(data)
         mean = np.mean(data)
         std_dev = np.std(data, ddof=1)  # Using ddof=1 for sample standard deviation
@@ -71,6 +89,18 @@ class preprocessData:
     def applySunDelete(self,img):
         return cv2.bitwise_and(img,img,mask=cv2.inRange(img,np.array([0,0,0]),np.array([254,253,255])))
     def load_images_and_preprocess(self,path:str,mask,apply_crop_sun:bool):
+        """
+        Load image from path and preprocess to next method
+
+        Parameters:
+        Path (str) : Folder path for reading the file
+        mask (array) : Mask to delete obstacle
+        apply_crop_sun (boolean) : If 'True' program delete sun else, keep the sun
+
+        Returns:
+        images : List of all image from the folder
+        filename : Name of all images filename 
+        """
         images = []
         name = []
         for filename in os.listdir(path):
@@ -105,6 +135,18 @@ class preprocessData:
             grad.append(cv2.convertScaleAbs(thresh))
         return grad
     def getDataframe(self,property:list,gray_level,index:list,intensity,statistical):
+        """
+        Create dataframe from input data
+
+        Parameters:
+        Property (List) : List of data to create dataframe
+        Grey_level (4-D array) : Fix dimension array that have GLCM value calculated from image
+        intensity (List) : List of average intensity of each image
+        statistical (List) : List of statistical values from each image (See RBratio)
+
+        return:
+        dataframe : dataframe of all data with length of the images 
+        """
         dataset = {
             prop : [] for prop in property
         }
@@ -125,6 +167,17 @@ class preprocessData:
         glcm = graycomatrix(image,distance,angle)
         return glcm
     def computeGlcm(self,image:list,distance,angle):
+        """
+        Compute GLCM value of an image
+
+        Parameters:
+        image (List) : List of images to calculate GlCM individually
+        distance (int) : Distance value for GLCM calculation (eg. 1,2,3,...,n)
+        angle (int) : Angle value for GLCM calculation. If angle = 0, GLCM calculation will be horizontal. If angle = 90, GLCM calculation will be perpendicular 
+
+        Returns:
+        GLCM : 4 Dimensional array that has GLCM value
+        """
         glcm = []
         for i in image:
             gray = graycomatrix(i,distance,angle)
@@ -160,6 +213,17 @@ class thresholding:
     def __init__(self):
         pass
     def RBratiosingle(self,input,filename,sunrise,sunset):
+        """
+        Compute GLCM value of an image
+
+        Parameters:
+        image (List) : List of images to calculate GlCM individually
+        distance (int) : Distance value for GLCM calculation (eg. 1,2,3,...,n)
+        angle (int) : Angle value for GLCM calculation. If angle = 0, GLCM calculation will be horizontal. If angle = 90, GLCM calculation will be perpendicular 
+
+        Returns:
+        GLCM : 4 Dimensional array that has GLCM value
+        """
         filtering = lambda x : (x > sunrise) & (x < sunset)
         decimal = timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=filename,time_zone=7))
         if filtering(decimal):
@@ -187,6 +251,23 @@ class thresholding:
         statistical = [skewness,std,diff,[R],[B]]
         return masked_gray,intensity,statistical
     def RBratio(self,input,filename,Time_zone,sunrise,sunset):
+        """
+        Compute GLCM value of an image
+
+        Parameters:
+        input (List) : Preprocess images
+        filename (List) : Filename of each image
+        Time_zone (int) : Time zone offset from UTC ex. +7 for Thailand,-4 for Chile 
+        Sunrise (float) : Time of sunrise from calculation
+        Sunset (float) : Time of sunset from calculation
+
+        return:
+        final (List) : List of cloud image that cloud and sky was seperate
+        value (List) : List of intensity value of each image
+        statistical (List) : This block processes each image, extracts color channel statistics (mean, intensity, skewness, std), 
+                             applies a threshold on the ratio of R to B, masks the image, and appends grayscale results 
+                             and statistical features (R/B channel difference, etc.) to lists for further analysis.
+        """
         final = []
         value= []
         chan_b = []

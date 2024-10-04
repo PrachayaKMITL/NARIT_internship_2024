@@ -8,6 +8,17 @@ class TimeCal:
         pass
 
     def TimeFromIndex(self,dataframe,TimeZone:int):
+        """
+        Calculate time from index of dataframe and create a new column
+
+        Parameters:
+        dataframe (Dataframe) : Dataframe that have image filename as index
+        TimeZone (int) : offset time from UTC ex. +7 for Thailand,-4 for Chile
+
+        Return:
+        dataframe : Dataframe with additional Time in standard time unit
+
+        """
         date = []
         for i in dataframe.index.tolist():
             date.append(timeConvertion.ticks_to_datetime(i,time_zone=TimeZone))
@@ -38,6 +49,9 @@ class dataFilter:
         dataset = list(select.itertuples(index=False,name=None))
         dataset = np.array(dataset)
         return dataset
+#Under development
+"""
 class Traning:
     def __init__(self):
         pass
+"""
