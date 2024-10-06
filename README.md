@@ -51,4 +51,8 @@ below.
        output
 After done folloing steps, user may use the model in other languages. In python, the model will be loaded using `onnxruntime` Python library.
 For C/C++, user may need to install libraries in that languages.
+
+## Masks
+In folder 'masks', are mask generated from `Mask_creator.py` that included both thresholding methods and manual masking method.
+both is able to generate decent quality of mask. If image cannot perform a good 
      
