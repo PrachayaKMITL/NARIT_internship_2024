@@ -36,4 +36,8 @@ a little bit of preprocessing that data before and give quite the same output th
 training customability and reduce time complexity.
 
 ## Usage
-There're some function that is able to use in the 
+I've written some important programs for generating and creating of the dataset and training. For generating dataset, the step will be explain 
+below. 
+    1. Categorize images by running `Write_label.py`, then program will write labels for each categories by categorizing it.
+       However, user may need to recheck each folder to ensure categorization correctness.
+     
