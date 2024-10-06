@@ -38,6 +38,17 @@ training customability and reduce time complexity.
 ## Usage
 I've written some important programs for generating and creating of the dataset and training. For generating dataset, the step will be explain 
 below. 
+
     1. Categorize images by running `Write_label.py`, then program will write labels for each categories by categorizing it.
        However, user may need to recheck each folder to ensure categorization correctness.
+    2. After finish inspection, user may run programm `Buildataset.py` to generate dataset to the folder. Programm instruction 
+       was written inline in the program itself.
+    3. Using generated dataset to train the model(The model is interchangable, see Sklearn documentation for others model).
+       and scaling before training. The model will fit the data and give out probability.
+    4. After training, program will display evaluation scores and ask user to save the model. User can retrain the model or
+       save the model as .onnx files as a globally support machine learning model file type.
+    5. User can test `Model.onnx` on `Test_model.py` by include path of the model. Run the code from onnxruntime and inspect
+       output
+After done folloing steps, user may use the model in other languages. In python, the model will be loaded using `onnxruntime` Python library.
+For C/C++, user may need to install libraries in that languages.
      
