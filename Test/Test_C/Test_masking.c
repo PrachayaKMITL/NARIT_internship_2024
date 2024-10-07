@@ -14,6 +14,9 @@ unsigned char* crop_center(unsigned char *img, int img_w, int img_h, int img_cha
     // Calculate stride (number of bytes per row) which might include padding
     int stride = img_w * img_chan;
 
+    // Debugging: Log information about image cropping
+    printf("Cropping image at center: (%d, %d), crop size: %d, original size: %dx%d\n", start_x, start_y, crop_size, img_w, img_h);
+
     // Allocate memory for the cropped image
     unsigned char *cropped_img = (unsigned char *)malloc(crop_size * crop_size * img_chan);
     if (cropped_img == NULL) {
@@ -38,8 +41,11 @@ unsigned char* crop_center(unsigned char *img, int img_w, int img_h, int img_cha
     return cropped_img;
 }
 
-// Masking function
+// Masking function with dimension checks
 unsigned char* masking(unsigned char *image, unsigned char *mask, int img_w, int img_h, int img_chan) {
+    // Debugging: Log information about mask and image dimensions
+    printf("Applying mask: Image size: %dx%d, Mask size: %dx%d\n", img_w, img_h, img_w, img_h);
+
     // Apply the mask
     for (int y = 0; y < img_h; y++) {
         for (int x = 0; x < img_w; x++) {
@@ -61,7 +67,7 @@ int main() {
     // Initialize image dimensions
     int img_w, img_h, img_chan;
 
-    // Load image from path
+    // Load image and mask from paths
     const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\All_sky_camera_Astropark_Chaingmai\\2024-06\\2024-06-18\\638542744942162902.png";
     const char *mask_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\masks\\Domestic observatories\\mask_Astropark.png";
     unsigned char *mask = stbi_load(mask_path, &img_w, &img_h, &img_chan, 1); // Load mask as single channel

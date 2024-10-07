@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include "C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\Test\Test_C\Header\stb_image.h"
+#include <stb_image.h>
 //#include "C:\Users\ASUS\Documents\NARIT_internship_2024\C_source_code\dep\Microsoft.ML.OnnxRuntime.1.16.0\build\native\include\onnxruntime_c_api.h"
 
 #define LEVELS 256  // Assuming GLCM is for 8-bit grayscale image
@@ -9,6 +9,7 @@
 #define IMAGE_WIDTH 100
 #define IMAGE_HEIGHT 100
 
+int image_width,image_height,channels;
 // Function to generate a test image
 void generate_test_image(int image[IMAGE_HEIGHT][IMAGE_WIDTH]) {
     // Fill the image with a simple pattern

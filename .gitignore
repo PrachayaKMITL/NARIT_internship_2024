@@ -3,6 +3,5 @@
 #ignore exe
 *.exe
 #ignore new png
-Mask.png
-
-*.h
+*.png
+*h
