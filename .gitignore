@@ -4,3 +4,5 @@
 *.exe
 #ignore new png
 Mask.png
+
+*.h

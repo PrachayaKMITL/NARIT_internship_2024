@@ -76,4 +76,7 @@ new mask. Default masks that included in folder mask are>
 These are complete list of observatory with sky camera data available.However, if there's any change in camera placement or 
 field of view, user may need to create a newer version of the mask.
 
-##
+## Example in C
+from all these steps, the model will be create and test in Python environment. However in real application, model may be use in varieties of scenario and environment. As mention above, 
+.onnx models are versatile for programming languages. So, I will conduct a test of prediction
+model in C to evaluate model performances and programming constrain in C.

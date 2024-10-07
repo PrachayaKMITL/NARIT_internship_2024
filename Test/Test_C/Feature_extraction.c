@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include "C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\Test\Test_C\Header\stb_image.h"
 //#include "C:\Users\ASUS\Documents\NARIT_internship_2024\C_source_code\dep\Microsoft.ML.OnnxRuntime.1.16.0\build\native\include\onnxruntime_c_api.h"
 
 #define LEVELS 256  // Assuming GLCM is for 8-bit grayscale image
