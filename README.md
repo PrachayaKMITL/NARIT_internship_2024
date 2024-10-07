@@ -1,3 +1,5 @@
+# AI for sky camera weather precaution.
+
 Hello, My name is Prachaya Makeragsakij from King Mongkut's institute of technology Ladkrabang
 
 This is my internship project currently working in 2024 with NARIT.
@@ -54,5 +56,24 @@ For C/C++, user may need to install libraries in that languages.
 
 ## Masks
 In folder 'masks', are mask generated from `Mask_creator.py` that included both thresholding methods and manual masking method.
-both is able to generate decent quality of mask. If image cannot perform a good 
-     
+both is able to generate decent quality of mask. If image cannot perform a good performance, user may need to consider creating a 
+new mask. Default masks that included in folder mask are>
+
+##### international observatories
+    1. `mask_Australia.png` : Springbook observatory, Springbook, Australia.
+    2. `mask_Chile.png` : PROMPT8 (CTIO), Coquimbo, Chile.
+    3. `mask_US.png` : Sierra remote observatories, California, USA.
+    4. `mask_China.png` : Gao Mei Gu observatory, Lijiandg, China.
+
+##### Domestic observatory (Thailand)
+    1. `mask_Astropark.png` : Princess Siridhorn Astropark, Maerim, Chiangmai.
+    2. `mask_TNO.png` : Thai National Observatory, Chomtong, Chiangmai.
+    3. `mask_Khonkaen.png` : Khonkaen Observatory, Ubolratana, Khonkaen.
+    4. `mask_Korat.png` : Nakhonratchasima Observatory, Muang, Nakhon Ratchasima.
+    5. `mask_Chachoengsao.png` : Chachoengsao Observatory, Plaeng Yao, Chachoengsao.
+    6. `mask_Songkla.png` : Songkla Observatory, Muang, Songkla.
+
+These are complete list of observatory with sky camera data available.However, if there's any change in camera placement or 
+field of view, user may need to create a newer version of the mask.
+
+##
