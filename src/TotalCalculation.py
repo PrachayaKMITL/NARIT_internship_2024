@@ -4,6 +4,8 @@ import datetime
 import numpy as np
 import cv2
 
+__all__ = ['CloudCalculation','SunPosition','timeConvertion',]
+
 """
 class CloudCalculation 
 

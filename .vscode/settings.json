@@ -1,6 +1,9 @@
 {
     "python.analysis.typeCheckingMode": "off",
     "python.analysis.autoImportCompletions": true,
+    "python.analysis.extraPaths": [
+    "./src"  // Adds the src directory to the Python path
+    ],
     "files.associations": {
         "stdio.h": "c"
     }

@@ -1,7 +1,9 @@
 import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
-from src.TotalCalculation import *
+from .TotalCalculation import *
+import numpy as np
+__all__ = ['TimeCal','dataFilter']
 
 class TimeCal:
     def __init__(self):

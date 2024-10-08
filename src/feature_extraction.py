@@ -1,5 +1,8 @@
 import numpy as np
 import warnings
+
+__all__ = ['compute_glcm','compute_properties','statistical']
+
 def compute_glcm(image, distances, angles, symmetric=False, normalized=False):
     """
     Compute the GLCM matrix for a given image.

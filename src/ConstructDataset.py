@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
 import os 
-from src.preprocessing import thresholding,preprocessData
-from src.TotalCalculation import timeConvertion,SunPosition
-from src.ClassPrediction import prediction
+from .preprocessing import thresholding,preprocessData
+from .TotalCalculation import timeConvertion,SunPosition
+from .ClassPrediction import prediction
 import shutil,os
+
+__all__ = ['Builddataset']
 
 class Builddataset:
     def __init__(self):

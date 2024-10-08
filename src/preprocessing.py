@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 import shutil
 from skimage.feature import graycomatrix,graycoprops
 import pandas as pd
-from src.TotalCalculation import *
+from .TotalCalculation import *
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import pickle

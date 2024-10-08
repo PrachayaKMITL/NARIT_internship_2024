@@ -1,13 +1,17 @@
 from turtle import st
 import cv2
 import numpy as np
-from src.preprocessing import *
+from .preprocessing import *
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
 import matplotlib.pyplot as plt
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score,pairwise_distances_argmin,pairwise_distances
 import base64
+import os,shutil
+
+__all__ = ['prediction','Evaluation']
+
 """
 Class prediction
     Combine alls of important functions for prediction in old-version (kmean clustering and GMM)
