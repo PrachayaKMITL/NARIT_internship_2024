@@ -1,16 +1,19 @@
 # src/__init__.py
-
 import os
 import sys
+import cv2
 
 # Get the directory of the src folder
-src_path = os.path.abspath(os.path.dirname(__file__))  # This will get the absolute path of the src folder
+current_dir = os.path.dirname(__file__)
 
-# Add the src directory to the sys.path
+# Construct the path to the src directory
+src_path = os.path.abspath(current_dir)
+
+# Ensure the src path is added to sys.path only if it's not already there
 if src_path not in sys.path:
     sys.path.append(src_path)
 
-# Optionally, you can import your modules
+# Now you can import your modules from the src directory
 from .ClassPrediction import *
 from .ConstructDataset import *
 from .feature_extraction import *
