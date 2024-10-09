@@ -4,4 +4,6 @@
 *.exe
 #ignore new png
 *.png
-*h
+#ignore C header files
+*.h
+*.json

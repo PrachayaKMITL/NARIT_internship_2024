@@ -2,6 +2,7 @@
 import os
 import sys
 import cv2
+import numpy as np
 
 # Get the directory of the src folder
 current_dir = os.path.dirname(__file__)
