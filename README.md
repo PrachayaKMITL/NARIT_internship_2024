@@ -1,9 +1,8 @@
 # AI for sky camera weather precaution.
+## Abstract
+This project is cooperative project with NARIT. The project is assigned to create machine learning model that have capability of making prediction of sky in 
 
-Hello, My name is Prachaya Makeragsakij from King Mongkut's institute of technology Ladkrabang
-
-This is my internship project currently working in 2024 with NARIT.
-This project aim to create a working algorithm that is able to predict and classified of sky in each conditions
+## classes
 we have seperate sky condition to 5 statuses.
 
     1. Clear : No cloud visible or slight cloud covered around 0-1 / 8 parts of the sky.
@@ -13,9 +12,26 @@ we have seperate sky condition to 5 statuses.
     5. Overcast : Cloud covered the whole sky, no visible sky in sight, cloud covered 8/8 parts of the sky.
 
 These condition will use in data labeling and others operation. But since the model will be created, we can leave prediction to the model for predict. (Explain later)
+## Definition
+In this project, some definition is marked for general commandment and agreements for users to understand.
+since most of components and objects used in this project are tecnically specific to astronomical and meteorolocgical terms.
+lists of important definition willl be mark down below. 
+
+### Programming definitions
+    1. Sky camera images : image capture from sky camera. Use for dataset creation, validation and Model testing.
+    2. Masking : Computer vision operation of obstacle deletion from an image, use `Opencv-Python`
+    3. GLCM : Stands for Gray Level Cooccurance Matrix, is feature extraction algorithm which extract value by comparing two adjecent pixels with given distance and angle value.
+    4. Statistic : Mean, skewness and standard deviation calculate from an image or images. Especially Red and Blue channel of image. 
+    5. Feature extraction : Meaningful values extracted from an image. including GLCM and statical value from an image.
+    6. Model : Mathematical model from machine learning algorithms. Use for classification sky in classesfrom class 0-4.
+
+### Scientific definitions
+    1. Sky camera : Camera modules which have capability to capture image of 180 degrees from horizon to zenith angle of 90 degrees.
+    2. Oktas : Oktas is standard cloud coverage measurements unit. Oktas divide sky into 8 parts and measure cloud coverage by eye or measuring device out of 8 part.
+    3. Daytime : Daytime in this project refers to time duration after sunrise and before sunset. This time duration needed for seperation between day and nightime.
+    4. Zenith : The zenith angle is the angle between the vertical direction (directly overhead) and the line of sight to the sun or another celestial object.     
 
 ## Methodology
-
 I've been working on the machine learning model, which I aim to present scalability and customability
 While I previously create an unsupervised model based on dataset generated from raw image data.
 I created some important method for further training and testing to evaluation of dataset in training and testing model, heres step of completing the model 
@@ -25,9 +41,9 @@ I created some important method for further training and testing to evaluation o
     3. Use image folder path to train the model in `training.py`.
     4. Use model from `training.py` then to use it in prediction.
 
-## Prinmary source
-For all of this to happen, I would like to thanks to Scikit-learn developing team and Opencv team, who contribute many valuable
-methods for the program and create other functions
+## Dependencies
+All dependencies of this project has been written in `requirement.txt` user can install all dependencies using <code>pip install -r requirement.txt</code>.
+User may use higher or lower version of libraries. However, `onnxruntime` and `skl2onnx` library should preserve as marked version.
 
 ## Disclaimers
 This project is cross-language project. Since the model will be firstly deployed in Python, then use the deployed model in 
