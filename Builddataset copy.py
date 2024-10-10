@@ -31,8 +31,7 @@ for folder in folders:
     folder = os.path.join(path,folder)
     images,filename = preprocessData().load_images_and_preprocess(folder,mask=mask,apply_crop_sun=True)
     sunrise,sunset = SunPosition().SunriseSunset(filename=filename[50],location=location,Time_zone=time_zone,start_date=start_date,include_end_date=True)
-    masked,value,statisical = thresholding().RBratio(input=images,filename=filename,sunrise=sunrise,sunset=sunset,Time_zone=time_zone)
-    #grad = preprocessData().Edging(input=masked,ker_size=7,cliplimit=40,gridsize=14,bias=50)
+    _,value,statisical = thresholding().RBratio(input=images,filename=filename,factor=[1.17,0.88],sunrise=sunrise,sunset=sunset,Time_zone=time_zone)
     gray = [cv2.cvtColor(i,cv2.COLOR_RGB2GRAY) for i in images]
     glcm = preprocessData().computeGlcm(image=gray,distance=[int(GLCM_param[0])],angle=[GLCM_param[1]])
     df = preprocessData().getDataframe(properties,glcm,index=filename,intensity=value,statistical=statisical)
