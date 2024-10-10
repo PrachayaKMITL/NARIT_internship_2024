@@ -250,7 +250,7 @@ class thresholding:
             diff = np.mean(R-B)
         statistical = [skewness,std,diff,[R],[B]]
         return masked_gray,intensity,statistical
-    def RBratio(self,input,filename,Time_zone,sunrise,sunset):
+    def RBratio(self,input,filename,factor,Time_zone,sunrise,sunset):
         """
         Compute GLCM value of an image
 
@@ -289,7 +289,7 @@ class thresholding:
                 chan_b.append(np.mean(B))
                 chan_r.append(np.mean(R))
                 intensity = np.mean(B)
-                ratio = np.log1p(R / (B + 1e-5)) * 1.2
+                ratio = np.log1p(R / (B + 1e-5)) * factor[0]
                 ratio = cv2.convertScaleAbs(ratio)
                 _, final_mask = cv2.threshold(ratio, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 masked = cv2.bitwise_and(input[i],input[i],mask=final_mask)
@@ -305,7 +305,7 @@ class thresholding:
                 chan_b.append(np.mean(B))
                 chan_r.append(np.mean(R))
                 intensity = np.mean(B)
-                ratio = np.log1p(R / (B + 1e-5)) * 0.9
+                ratio = np.log1p(R / (B + 1e-5)) * factor[1]
                 ratio = cv2.convertScaleAbs(ratio)
                 _, final_mask = cv2.threshold(ratio, 1, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 masked = cv2.bitwise_and(input[i],input[i],mask=final_mask)
