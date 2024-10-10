@@ -7,3 +7,8 @@
 #ignore C header files
 *.h
 *.json
+#ignore Pycache
+# Ignore Python bytecode files
+*.pyc
+# Ignore __pycache__ in the src/ directory
+src/__pycache__/

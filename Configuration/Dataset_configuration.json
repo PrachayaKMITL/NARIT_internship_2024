@@ -18,12 +18,12 @@
         "parameters": {
         "start_date": "2024-01-01",
         "size": [285, 200],
-        "mask": "masks\\mask_delete_5.png",
+        "mask": "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\masks\\Domestic observatories\\mask_Astropark.png",
         "timezone": 7,
         "location": [18.849417,98.9538]
         },
         "paths": {
-        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Categorical_night\\Clear",
+        "output_directory": "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Categorical_large",
         "kmean_model": "models\\miniBkmean_model_Nonesobel_match.pkl",
         "minik_model": "models\\kmean_model_Nonesobel_match.pkl"
         }
