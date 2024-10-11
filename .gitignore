@@ -5,8 +5,6 @@
 #ignore new png
 *.png
 #ignore C header files
-*.h
-*.json
 #ignore Pycache
 # Ignore Python bytecode files
 *.pyc
