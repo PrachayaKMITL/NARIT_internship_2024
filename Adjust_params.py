@@ -29,6 +29,7 @@ def RBratiosingle(factor, crop, crop_night):
     masked_night = cv2.cvtColor(masked_night, cv2.COLOR_BGR2RGB)
 
     # Display cloud percentage for day and night images
+    '''
     cloud_percentage_day = cv2.countNonZero(final_mask) / (mask_count) * 100
     cloud_percentage_night = cv2.countNonZero(final_mask_night) / (mask_count) * 100
 
@@ -36,7 +37,7 @@ def RBratiosingle(factor, crop, crop_night):
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
     cv2.putText(masked_night, f"Cloud Percentage: {cloud_percentage_night:.2f}%", (60, 40),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-
+    '''
     # Stack and display both images
     stack = np.hstack((masked, masked_night))
     cv2.imshow('Interactive Window', stack)
@@ -47,7 +48,7 @@ def RBratiosingle(factor, crop, crop_night):
 img_path = input("Enter image path for thresholding (day): ")
 img_path_night = input("Enter image path for thresholding (night): ")
 
-mask_path = r'C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\masks\Domestic observatories\mask_Astropark.png'
+mask_path = r'C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\masks\Domestic observatories\Mask_TNO.png'
 input_img = cv2.imread(img_path)
 input_img_night = cv2.imread(img_path_night)
 
@@ -55,13 +56,13 @@ input_img_night = cv2.imread(img_path_night)
 input_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2RGB)
 input_img_night = cv2.cvtColor(input_img_night, cv2.COLOR_BGR2RGB)
 
-mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-crop = cv2.bitwise_and(input_img, input_img, mask=mask)
-crop_night = cv2.bitwise_and(input_img_night, input_img_night, mask=mask)
+crop = preprocessData().crop_center(input_img, crop_size=700)
+crop_night = preprocessData().crop_center(input_img_night, crop_size=700)
 
-# Crop the images using preprocessData method
-crop = preprocessData().crop_center(crop, crop_size=570)
-crop_night = preprocessData().crop_center(crop_night, crop_size=570)
+mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
+mask = preprocessData().crop_center(mask,crop_size=700)
+crop = cv2.bitwise_and(crop, crop, mask=mask)
+crop_night = cv2.bitwise_and(crop_night, crop_night, mask=mask)
 
 # Check if the images were loaded successfully
 if crop is None or crop_night is None:

@@ -72,7 +72,7 @@ class preprocessData:
         std_dev = np.std(data, ddof=1)  # Using ddof=1 for sample standard deviation
         skewness = (n / ((n - 1) * (n - 2))) * np.sum(((data - mean) / std_dev) ** 3)
         return skewness
-    def crop_center(self,img, crop_size=570):
+    def crop_center(self,img, crop_size:int):
         h, w = img.shape[:2]
         start_x = (w - crop_size) // 2
         start_y = (h - crop_size) // 2
@@ -88,7 +88,7 @@ class preprocessData:
         return np.min(inten[90:400])
     def applySunDelete(self,img):
         return cv2.bitwise_and(img,img,mask=cv2.inRange(img,np.array([0,0,0]),np.array([254,253,255])))
-    def load_images_and_preprocess(self,path:str,mask,apply_crop_sun:bool):
+    def load_images_and_preprocess(self,path:str,mask,apply_crop_sun:bool,size:int):
         """
         Load image from path and preprocess to next method
 
@@ -105,7 +105,7 @@ class preprocessData:
         name = []
         for filename in os.listdir(path):
             img = cv2.imread(os.path.join(path,filename))
-            img = preprocessData().crop_center(img)
+            img = preprocessData().crop_center(img,crop_size=size)
             img = cv2.bitwise_and(img,img,mask=mask)
             img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             if apply_crop_sun:
