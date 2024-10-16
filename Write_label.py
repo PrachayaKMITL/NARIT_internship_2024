@@ -25,15 +25,14 @@ sunrise1, sunset1 = SunPosition.DaytimeInfo(latitude=location[0], declination=de
 
 def copy_categorical_day(image_directory, output_directory, mask_directory, classes:dict, mode):
     mask = cv2.imread(mask_directory, cv2.IMREAD_GRAYSCALE)
-    mask = preprocessData().crop_center(mask, crop_size=700)
-
     # Load and preprocess images
-    images, name = preprocessData().load_images_and_preprocess(path=image_directory, mask=mask, apply_crop_sun=True, size=700)
+    images, name = preprocessData().load_images_and_preprocess(path=image_directory, mask=mask, apply_crop_sun=False)
+    
     final = []
     for i in images:
         R,G,B = cv2.split(i)
         B = B + 1e-3
-        RB = (R/B) * 0.87
+        RB = (R/B) * 1
         RB = cv2.convertScaleAbs(RB)
         i = cv2.bitwise_and(i,i,mask=RB)
         i = cv2.cvtColor(i,cv2.COLOR_RGB2GRAY)
@@ -67,7 +66,8 @@ def copy_categorical_day(image_directory, output_directory, mask_directory, clas
             source_path = os.path.join(image_directory, str(image_filename) + '.png')
             destination_path = os.path.join(target_folder, str(image_filename) + '.png')
             shutil.copy2(source_path, destination_path)
-
+def count_files_in_folder(directory):
+    return sum(os.path.isfile(os.path.join(directory, f)) for f in os.listdir(directory))
 def process_image_folders(main_directory):
     # Define class labels to folder names
     classes_map = {
@@ -84,13 +84,18 @@ def process_image_folders(main_directory):
     
     # Iterate through subdirectories and process images
     for subdir, _, _ in os.walk(main_directory):
-        copy_categorical_day(subdir, r'C:\Users\ASUS\Documents\NARIT_internship_data\Dataset\Image_data_TNO\Image_data_Day', 
+        copy_categorical_day(subdir, output_directory, 
                              mask_directory=r'C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\masks\Domestic observatories\Mask_TNO.png', 
                              classes=classes_map, mode='day')
         print(f"Processed images from {subdir}")
 
 # Define the main image directory
-main_image_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_TNO\2023-12'
+main_image_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_TNO\2024-09'
+output_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\Dataset\Image_data_TNO\Image_data_Day'
 for i in os.listdir(main_image_directory):
     image_data_path = os.path.join(main_image_directory, i)
     process_image_folders(image_data_path)
+
+for foldername  in os.listdir(output_directory):
+    files = count_files_in_folder(os.path.join(output_directory,foldername))
+    print(f"\nTotal {files} assinged to {foldername} Folder")

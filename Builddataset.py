@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import cv2
 from src.preprocessing import *
-from src.TotalCalculation import *
+from src.ConstructDataset import Builddataset
 sky_cam = str(input("Select images to train(Astropark : (December,April,June)) : "))
 with open("Configuration\\Dataset_configuration.json", 'r') as config_file:
     config = json.load(config_file)
@@ -28,11 +28,11 @@ folders = os.listdir(path)
 for folder in folders:
     folder = os.path.join(path,folder)
     images,filename = preprocessData().load_images_and_preprocess(folder,mask=mask,apply_crop_sun=True)
-    sunrise,sunset = SunPosition().SunriseSunset(filename=filename[50],location=location,Time_zone=time_zone,start_date=start_date,include_end_date=True)
-    masked,value,statisical = thresholding().RBratio(input=images,filename=filename,sunrise=sunrise,sunset=sunset,Time_zone=time_zone)
-    #grad = preprocessData().Edging(input=masked,ker_size=7,cliplimit=40,gridsize=14,bias=50)
-    glcm = preprocessData().computeGlcm(image=masked,distance=[int(GLCM_param[1])],angle=[GLCM_param[3]])
-    df = preprocessData().getDataframe(properties,glcm,index=filename,intensity=value,statistical=statisical)
+    #masked,value,statisical = thresholding().RBratio(input=images,filename=filename,sunrise=sunrise,sunset=sunset,Time_zone=time_zone)
+    gray_image = [cv2.cvtColor(i,cv2.COLOR_RGB2GRAY) for i in images]
+    intensity,statistic = Builddataset().Statistical(input=images)
+    glcm = preprocessData().computeGlcm(image=gray_image,distance=[int(GLCM_param[1])],angle=[GLCM_param[3]])
+    df = preprocessData().getDataframe(properties,glcm,index=filename,intensity=intensity,statistical=statistic)
     output_filename = f'GLCM_ALL_sky_{day}_dis{GLCM_param[1]}_ang{GLCM_param[3]}.csv'
     output_path = os.path.join(output_directory, output_filename)
     print(f"---File {day} write complete---")

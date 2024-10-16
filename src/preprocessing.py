@@ -68,9 +68,9 @@ class preprocessData:
         skewness : Skewness value of the data 
         """
         n = len(data)
-        mean = np.mean(data)
-        std_dev = np.std(data, ddof=1)  # Using ddof=1 for sample standard deviation
-        skewness = (n / ((n - 1) * (n - 2))) * np.sum(((data - mean) / std_dev) ** 3)
+        mean_blue = np.mean(data)
+        std_dev_blue = np.std(data)
+        skewness = (n / ((n - 1) * (n - 2))) * np.sum(((data - mean_blue) / std_dev_blue))
         return skewness
     def crop_center(self,img, crop_size:int):
         h, w = img.shape[:2]
@@ -80,15 +80,7 @@ class preprocessData:
         end_y = start_y + crop_size
         cropped_img = img[start_y:end_y, start_x:end_x]
         return cropped_img
-    def Threshold(self,image):
-        inten = []
-        for i in image:
-            _,_,B = cv2.split(i)
-            inten.append(np.mean(B))
-        return np.min(inten[90:400])
-    def applySunDelete(self,img):
-        return cv2.bitwise_and(img,img,mask=cv2.inRange(img,np.array([0,0,0]),np.array([254,253,255])))
-    def load_images_and_preprocess(self,path:str,mask,apply_crop_sun:bool,size:int):
+    def load_images_and_preprocess(self,path:str,mask,apply_crop_sun:bool):
         """
         Load image from path and preprocess to next method
 
@@ -100,19 +92,29 @@ class preprocessData:
         Returns:
         images : List of all image from the folder
         filename : Name of all images filename 
-        """
+        """       
         images = []
+        masked = []     
         name = []
         for filename in os.listdir(path):
             img = cv2.imread(os.path.join(path,filename))
-            img = preprocessData().crop_center(img,crop_size=size)
-            img = cv2.bitwise_and(img,img,mask=mask)
             img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
             if apply_crop_sun:
                 img = self.cropSun(img)
             images.append(img)
             name.append(int(os.path.splitext(os.path.basename(filename))[0]))
-        return images,name
+
+        for img in images:
+            if img.shape[:2] != mask.shape[:2]:
+                # Resize mask to match the image dimensions if necessary
+                resized_img = cv2.resize(img, (mask.shape[1], mask.shape[0]))
+            else:
+                resized_img = img 
+                    # Apply mask using bitwise AND operation
+            resized_img = cv2.bitwise_and(resized_img, resized_img, mask=mask)
+            masked.append(resized_img)
+
+        return masked,name
     def load_single_image(self,path:str,mask:str,apply_crop_sun:bool,crop_size:int):
         images = []
         name = []

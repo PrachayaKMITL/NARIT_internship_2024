@@ -5,6 +5,7 @@ from .preprocessing import thresholding,preprocessData
 from .TotalCalculation import timeConvertion,SunPosition
 from .ClassPrediction import prediction
 import shutil,os
+import cv2
 
 __all__ = ['Builddataset']
 
@@ -43,5 +44,40 @@ class Builddataset:
         if Mode == 'night':
             dataframe = dataframe[(dataframe['Time (decimal)'] < suntime[0]) | (dataframe['Time (decimal)'] > suntime[1])]
         return dataframe
+    def Statistical(self,input:list):
+        """
+        Compute statical value of each image
+
+        Parameters:
+        input (List) : Preprocess images
+
+        return:
+        value (List) : List of intensity value of each image
+        statistical (List) : This block processes each image, extracts color channel statistics (mean, intensity, skewness, std), 
+                             applies a threshold on the ratio of R to B, masks the image, and appends grayscale results 
+                             and statistical features (R/B channel difference, etc.) to lists for further analysis.
+        """
+        intensity = []
+        chan_b = []
+        chan_r = []
+        skewness = []
+        std = []
+        diff = []
+        for i in input:
+            R,_,B = cv2.split(i)
+            intensity.append(np.mean(i))
+            skewness.append(preprocessData().calculate_skewness(B))
+            std.append(np.std(B))
+            diff.append(np.mean(R-B))
+            chan_r.append(np.mean(R))
+            chan_b.append(np.mean(B))
+        chan_r = np.array(chan_r).reshape(-1,1)
+        chan_b = np.array(chan_b).reshape(-1,1)
+        skewness = np.array(skewness).reshape(-1,1)
+        std = np.array(std).reshape(-1,1)
+        diff = np.array(diff).reshape(-1,1)
+        statistical = np.concatenate((intensity,skewness,std,diff,chan_r,chan_b),axis=1)
+
+        return intensity,statistical.T
 
 
