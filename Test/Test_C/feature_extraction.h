@@ -7,8 +7,6 @@
 #include <stb_image.h>
 #include <stb_image_write.h>
 
-#define LEVELS 256  // Assuming GLCM is for 8-bit grayscale image
-
 // Function to compute GLCM
 void compute_glcm(unsigned char *image, int rows, int cols, int dx, int dy, double P[LEVELS][LEVELS]) {
     int i, j;
@@ -218,58 +216,4 @@ void calculate_image_statistics(unsigned char *image, int img_w, int img_h, int 
     free(red_channel);
     free(green_channel);
     free(blue_channel);
-}
-
-int main() {
-    int img_w, img_h, img_c;
-    const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\All_sky_camera_Astropark_Chaingmai\\2024-08\\2024-08-06\\638584979539730949.png";
-    unsigned char *image = stbi_load(image_path, &img_w, &img_h, &img_c, 0);
-    if (!image) {
-        printf("Error loading image: %s\n", stbi_failure_reason());
-        return 1;
-    }
-
-    // Convert to grayscale for GLCM
-    unsigned char *gray_image = (unsigned char *)malloc(img_w * img_h);
-    for (int y = 0; y < img_h; y++) {
-        for (int x = 0; x < img_w; x++) {
-            int pixel_index = (y * img_w + x) * img_c;
-            gray_image[y * img_w + x] = (unsigned char)(0.2989 * image[pixel_index] + 0.5870 * image[pixel_index + 1] + 0.1140 * image[pixel_index + 2]);
-        }
-    }
-
-    // Calculate GLCM
-    double GLCM[LEVELS][LEVELS];
-    compute_glcm(gray_image, img_h, img_w, 1, 0, GLCM); // Horizontal GLCM
-    double contrast, dissimilarity, homogeneity, asm_val, energy, entropy, mean, variance, correlation;
-    
-    compute_properties(GLCM, LEVELS, "contrast", &contrast);
-    compute_properties(GLCM, LEVELS, "dissimilarity", &dissimilarity);
-    compute_properties(GLCM, LEVELS, "homogeneity", &homogeneity);
-    compute_properties(GLCM, LEVELS, "ASM", &asm_val);
-    compute_properties(GLCM, LEVELS, "energy", &energy);
-    compute_properties(GLCM, LEVELS, "entropy", &entropy);
-    compute_properties(GLCM, LEVELS, "mean", &mean);
-    compute_properties(GLCM, LEVELS, "variance", &variance);
-    compute_properties(GLCM, LEVELS, "correlation", &correlation);
-
-    // Print GLCM features
-    printf("GLCM Features:\n");
-    printf("Contrast: %.4f\n", contrast);
-    printf("Dissimilarity: %.4f\n", dissimilarity);
-    printf("Homogeneity: %.4f\n", homogeneity);
-    printf("ASM: %.4f\n", asm_val);
-    printf("Energy: %.4f\n", energy);
-    printf("Entropy: %.4f\n", entropy);
-    printf("Mean: %.4f\n", mean);
-    printf("Variance: %.4f\n", variance);
-    printf("Correlation: %.4f\n", correlation);
-
-    // Calculate image statistics
-    calculate_image_statistics(image, img_w, img_h, img_c);
-
-    // Free memory
-    free(image);
-    free(gray_image);
-    return 0;
 }

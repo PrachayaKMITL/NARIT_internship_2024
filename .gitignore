@@ -6,9 +6,8 @@
 #ignore C header files
 #ignore Pycache
 # Ignore Python bytecode files
-Test\Test_C\crop_image.png
-Test\Test_C\masked_output_image.png
 *.pyc
+*.png
 # Ignore __pycache__ in the src/ directory
 src/__pycache__/
 #ignore MD for now
