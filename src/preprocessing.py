@@ -80,41 +80,51 @@ class preprocessData:
         end_y = start_y + crop_size
         cropped_img = img[start_y:end_y, start_x:end_x]
         return cropped_img
-    def load_images_and_preprocess(self,path:str,mask,apply_crop_sun:bool):
+    def load_images_and_preprocess(self, path: str, mask, apply_crop_sun: bool):
         """
-        Load image from path and preprocess to next method
+        Load images from the specified path, apply optional sun cropping, and mask each image.
 
         Parameters:
-        Path (str) : Folder path for reading the file
-        mask (array) : Mask to delete obstacle
-        apply_crop_sun (boolean) : If 'True' program delete sun else, keep the sun
+        path (str): Folder path for reading the files.
+        mask (array): Mask to apply for removing obstacles.
+        apply_crop_sun (bool): If True, remove the sun from the images; otherwise, keep the sun.
 
         Returns:
-        images : List of all image from the folder
-        filename : Name of all images filename 
-        """       
-        images = []
-        masked = []     
+        masked (list): List of masked images from the folder.
+        name (list): List of image filenames without the extension.
+        """
+        masked = []
         name = []
+        mask_h, mask_w = mask.shape[:2]
+
+        # Precompute resized masks for all unique image sizes encountered
+        resize_cache = {}
+
         for filename in os.listdir(path):
-            img = cv2.imread(os.path.join(path,filename))
-            img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+            filepath = os.path.join(path, filename)
+            img = cv2.imread(filepath)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
             if apply_crop_sun:
                 img = self.cropSun(img)
-            images.append(img)
-            name.append(int(os.path.splitext(os.path.basename(filename))[0]))
 
-        for img in images:
-            if img.shape[:2] != mask.shape[:2]:
-                # Resize mask to match the image dimensions if necessary
-                resized_img = cv2.resize(img, (mask.shape[1], mask.shape[0]))
-            else:
-                resized_img = img 
-                    # Apply mask using bitwise AND operation
-            resized_img = cv2.bitwise_and(resized_img, resized_img, mask=mask)
-            masked.append(resized_img)
+            img_h, img_w = img.shape[:2]
 
-        return masked,name
+            # Check if the resized mask is already cached; if not, resize and cache it
+            if (img_w, img_h) not in resize_cache:
+                if img_w == mask_w and img_h == mask_h:
+                    resize_cache[(img_w, img_h)] = mask
+                else:
+                    resize_cache[(img_w, img_h)] = cv2.resize(mask, (img_w, img_h))
+
+            # Apply mask with NumPy instead of OpenCV for better performance
+            resized_mask = resize_cache[(img_w, img_h)]
+            masked_img = cv2.bitwise_and(img,img,mask=resized_mask)
+
+            masked.append(masked_img)
+            name.append(os.path.splitext(filename)[0])  # Store filename without extension
+
+        return masked, name
     def load_single_image(self,path:str,mask:str,apply_crop_sun:bool,crop_size:int):
         images = []
         name = []

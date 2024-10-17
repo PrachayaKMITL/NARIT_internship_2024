@@ -5,6 +5,7 @@
     "./src"  // Adds the src directory to the Python path
     ],
     "files.associations": {
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "Test.C": "cpp"
     }
 }

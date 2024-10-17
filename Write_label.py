@@ -95,7 +95,7 @@ output_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\Dataset\Image
 for i in os.listdir(main_image_directory):
     image_data_path = os.path.join(main_image_directory, i)
     process_image_folders(image_data_path)
-
+    
 for foldername  in os.listdir(output_directory):
     files = count_files_in_folder(os.path.join(output_directory,foldername))
-    print(f"\nTotal {files} assinged to {foldername} Folder")
+

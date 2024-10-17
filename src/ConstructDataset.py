@@ -65,7 +65,7 @@ class Builddataset:
         diff = []
         for i in input:
             R,_,B = cv2.split(i)
-            intensity.append(np.mean(i))
+            intensity.append(np.mean(B))
             skewness.append(preprocessData().calculate_skewness(B))
             std.append(np.std(B))
             diff.append(np.mean(R-B))
@@ -76,8 +76,43 @@ class Builddataset:
         skewness = np.array(skewness).reshape(-1,1)
         std = np.array(std).reshape(-1,1)
         diff = np.array(diff).reshape(-1,1)
-        statistical = np.concatenate((intensity,skewness,std,diff,chan_r,chan_b),axis=1)
+        statistical = np.concatenate((skewness,std,diff,chan_r,chan_b),axis=1)
 
         return intensity,statistical.T
+
+    def Statistical_test(self, input: list):
+        """
+        Compute statistical values of each image.
+
+        Parameters:
+        input (List) : Preprocessed images
+
+        Returns:
+        intensity (List) : List of intensity values of each image
+        statistical (Array) : Array containing mean, skewness, std, R/B difference, and means of R and B channels.
+        """
+        num_images = len(input)
+        
+        # Preallocate arrays
+        intensity = np.zeros(num_images)
+        chan_r = np.zeros(num_images)
+        chan_b = np.zeros(num_images)
+        skewness = np.zeros(num_images)
+        std = np.zeros(num_images)
+        diff = np.zeros(num_images)
+
+        for idx, img in enumerate(input):
+            R, _, B = cv2.split(img)
+
+            intensity[idx] = np.mean(img)
+            skewness[idx] = self.calculate_skewness(B)
+            std[idx] = np.std(B)
+            diff[idx] = np.mean(R - B)
+            chan_r[idx] = np.mean(R)
+            chan_b[idx] = np.mean(B)
+
+        statistical = np.column_stack((intensity, skewness, std, diff, chan_r, chan_b))
+
+        return intensity.tolist(), statistical
 
 
