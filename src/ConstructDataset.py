@@ -65,12 +65,13 @@ class Builddataset:
         diff = []
         for i in input:
             R,_,B = cv2.split(i)
+            B = B + 1e-11
             intensity.append(np.mean(B))
             skewness.append(preprocessData().calculate_skewness(B))
             std.append(np.std(B))
             diff.append(np.mean(R-B))
-            chan_r.append(np.mean(R))
             chan_b.append(np.mean(B))
+            chan_r.append(np.mean(R))
         chan_r = np.array(chan_r).reshape(-1,1)
         chan_b = np.array(chan_b).reshape(-1,1)
         skewness = np.array(skewness).reshape(-1,1)

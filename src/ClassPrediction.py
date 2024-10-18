@@ -56,11 +56,16 @@ class prediction:
         #confidence = (max(dis)-dis)/max(dis)*100
         return 1-dis[0][0]
     def CloudRatio(self, image, mask):
-        image = np.array(image)
-        mask = np.array(mask)
-        area = cv2.countNonZero(image)
-        mask = cv2.countNonZero(mask)
-        return area / mask * 100, np.std(image)
+        img_h, img_w = image.shape[:2]
+        mask_h, mask_w = mask.shape[:2]
+        
+        if (img_h != mask_h) or (img_w != mask_w):
+            mask = cv2.resize(mask, (img_w, img_h))
+        cloud_area = cv2.countNonZero(image)
+        mask_area = cv2.countNonZero(mask)
+        cloud_ratio = (cloud_area / mask_area) * 100 if mask_area != 0 else 0
+
+        return cloud_ratio, np.std(image)
     def octas(self, cloud_percentage,std):
         oktas = round((cloud_percentage / 100) * 8)
         if oktas == 8 and std < 68:

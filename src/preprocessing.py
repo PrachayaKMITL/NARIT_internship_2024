@@ -125,18 +125,25 @@ class preprocessData:
             name.append(os.path.splitext(filename)[0])  # Store filename without extension
 
         return masked, name
-    def load_single_image(self,path:str,mask:str,apply_crop_sun:bool,crop_size:int):
-        images = []
-        name = []
-        img = cv2.imread(os.path.join(path))
-        img = self.crop_center(img,crop_size=crop_size)
-        img = cv2.bitwise_and(img,img,mask=mask)
-        img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+    def load_single_image(self,path:str,mask,apply_crop_sun:bool):
+        mask_h, mask_w = mask.shape[:2]
+        resize_cache = {}
+
+        img = cv2.imread(path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
         if apply_crop_sun:
             img = self.cropSun(img)
-        images.append(img)
-        name.append(int(os.path.splitext(os.path.basename(path))[0]))
-        return images,name
+
+        img_h, img_w = img.shape[:2]
+        if (img_w, img_h) not in resize_cache:
+            if img_w == mask_w and img_h == mask_h:
+                resize_cache[(img_w, img_h)] = mask
+            else:
+                resize_cache[(img_w, img_h)] = cv2.resize(mask, (img_w, img_h))
+        resized_mask = resize_cache[(img_w, img_h)]
+        masked_img = cv2.bitwise_and(img,img,mask=resized_mask)
+        return [masked_img],[os.path.splitext(os.path.basename(path))[0]]
     def Edging(self,input:list,ker_size:int,cliplimit:int,gridsize:int,bias:int):
         grad = []
         clahe = cv2.createCLAHE(clipLimit=cliplimit, tileGridSize=(gridsize, gridsize))
