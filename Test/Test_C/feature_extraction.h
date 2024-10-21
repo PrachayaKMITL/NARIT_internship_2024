@@ -7,6 +7,7 @@
 #include <stb_image.h>
 #include <stb_image_write.h>
 
+#define LEVELS = 256
 // Function to compute GLCM
 void compute_glcm(unsigned char *image, int rows, int cols, int dx, int dy, double P[LEVELS][LEVELS]) {
     int i, j;

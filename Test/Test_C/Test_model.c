@@ -222,7 +222,7 @@ void calculate_image_statistics(unsigned char *image, int img_w, int img_h, int 
 
 int main() {
     int img_w, img_h, img_c;
-    const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\All_sky_camera_Astropark_Chaingmai\\2024-08\\2024-08-06\\638584979539730949.png";
+    const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\Test\\Test_C\\masked_output_image.png";
     unsigned char *image = stbi_load(image_path, &img_w, &img_h, &img_c, 0);
     if (!image) {
         printf("Error loading image: %s\n", stbi_failure_reason());

@@ -3,6 +3,7 @@
 #include <stb_image.h>
 #include <stb_image_write.h>
 #include "function.h"
+#include "feature_extraction.h"
 
 int main() {
     int img_w, img_h, img_c;  // Variables to store image width, height, and channel count
@@ -16,8 +17,20 @@ int main() {
 
     // Load the image
     unsigned char *image = stbi_load(image_path, &img_w, &img_h, &img_c, 0);
+    if (image == NULL) {
+        printf("Error loading image.\n");
+        return 1;
+    }
+
     // Load the mask
     unsigned char *mask = stbi_load(mask_path, &mask_w, &mask_h, &mask_c, 0);
+    if (mask == NULL) {
+        printf("Error loading mask.\n");
+        stbi_image_free(image);
+        return 1;
+    }
+
+    // Apply the mask to the image
     unsigned char *masked_image = masking(image, mask, img_w, img_h, img_c);
 
     // Crop the masked image
@@ -30,13 +43,15 @@ int main() {
         return 1;  // Exit if cropping fails
     }
 
-    // Save the cropped image
-    const char *output_image_path = "crop_image.png";
-    if (stbi_write_png(output_image_path, crop_w, crop_h, img_c, crop_image, crop_w * img_c)) {
-        printf("Cropped image saved as: %s\n", output_image_path);
-    } else {
-        printf("Failed to save cropped image\n");
-    }
+    // Compute GLCM matrix
+    double GLCM[256][256];  // Using double as the GLCM values are normalized later
+    int dx = 1, dy = 0;     // GLCM parameters (distance = 1, angle = 0)
+    compute_glcm(crop_image, crop_h, crop_w, dx, dy, GLCM);
+
+    // Compute and print contrast property
+    double contrast_result = 0.0;
+    compute_properties(GLCM, 256, "contrast", &contrast_result);
+    printf("Contrast: %.3f\n", contrast_result);
 
     // Free allocated memory
     free(masked_image);           // Free the masked image memory

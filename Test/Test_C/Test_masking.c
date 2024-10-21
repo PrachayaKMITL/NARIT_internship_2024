@@ -19,11 +19,6 @@ void masking(const char *image_path, const char *mask_path) {
     unsigned char *mask = stbi_load(mask_path, &mask_w, &mask_h, &mask_chan, 0);
 
     // Check if the images were loaded successfully
-    if (image == NULL || mask == NULL) {
-        fprintf(stderr, "Error loading image or mask: %s\n", stbi_failure_reason());
-        return; // Exit the function if loading failed
-    }
-
     // Ensure the mask dimensions match the image dimensions
     if (im_w != mask_w || im_h != mask_h) {
         fprintf(stderr, "Error: Image and mask dimensions do not match.\n");
@@ -61,8 +56,8 @@ void masking(const char *image_path, const char *mask_path) {
 
 int main(int argc, char const *argv[]) {
     // Set the paths for the image and mask
-    image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\All_sky_camera_Astropark_Chaingmai\\2024-08\\2024-08-06\\638584979539730949.png";
-    mask_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\masks\\Domestic observatories\\mask_Astropark.png";
+    const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Dataset\\image_data_Astropark\\image_data_Day\\Clear\\638545286553562657.png";
+    const char *mask_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\masks\\Domestic observatories\\mask_Astropark.png";
 
     // Call the masking function
     masking(image_path, mask_path);
