@@ -127,7 +127,6 @@ void compute_properties(double P[LEVELS][LEVELS], int num_levels, const char* pr
 
 // Main function
 int main() {
-    double features[]
     double P[LEVELS][LEVELS];
     int img_w, img_h, img_c;
     const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\Test\\Test_C\\masked_output_image.png";
@@ -165,7 +164,19 @@ int main() {
     compute_properties(P, LEVELS, "dissimilarity", &dissimilarity_result);
     printf("Dissimilarity: %f\n", dissimilarity_result);
 
-    
+    double contrast_result;
+    compute_properties(P, LEVELS, "contrast", &contrast_result);
+    printf("Contrast: %f\n", contrast_result);
+
+    double energy_result;
+    compute_properties(P, LEVELS, "energy", &energy_result);
+    printf("Energy: %f\n", energy_result);
+
+    double dissimilarity_result;
+    compute_properties(P, LEVELS, "dissimilarity", &dissimilarity_result);
+    printf("Dissimilarity: %f\n", dissimilarity_result);
+
+
 
     // Free image memory
     free(gray_image);

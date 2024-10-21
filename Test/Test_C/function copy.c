@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stb_image.h>
 #include <stb_image_write.h>
-#include "function.h"
+#include "preprocessing.h"
 #include "feature_extraction.h"
 
 int main() {

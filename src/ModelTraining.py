@@ -52,8 +52,3 @@ class dataFilter:
         dataset = np.array(dataset)
         return dataset
 #Under development
-"""
-class Traning:
-    def __init__(self):
-        pass
-"""

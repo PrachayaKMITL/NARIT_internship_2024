@@ -56,7 +56,7 @@ void masking(const char *image_path, const char *mask_path) {
 
 int main(int argc, char const *argv[]) {
     // Set the paths for the image and mask
-    const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Dataset\\image_data_Astropark\\image_data_Day\\Clear\\638545286553562657.png";
+    const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Dataset\\image_data_Astropark\\image_data_Day\\Clear\\638545284152007058.png";
     const char *mask_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\masks\\Domestic observatories\\mask_Astropark.png";
 
     // Call the masking function

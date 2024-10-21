@@ -13,6 +13,31 @@
 // Function prototypes
 unsigned char* masking(unsigned char *image, unsigned char *mask, int img_w, int img_h, int img_chan);
 unsigned char* crop_center(unsigned char *img, int img_w, int img_h, int img_chan, int crop_size, int *out_w, int *out_h);
+unsigned char* convert_to_grayscale(unsigned char *img, int img_w, int img_h, int img_chan);
+
+//Function declaration
+unsigned char* convert_to_grayscale(unsigned char *image, int width, int height, int channels) {
+    unsigned char *grayscale_image = (unsigned char*)malloc(width * height * sizeof(unsigned char));
+    if (grayscale_image == NULL) {
+        printf("Failed to allocate memory for grayscale image\n");
+        return NULL;
+    }
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            int idx = i * width * channels + j * channels;
+            unsigned char r = image[idx];
+            unsigned char g = image[idx + 1];
+            unsigned char b = image[idx + 2];
+            
+            // Convert to grayscale using luminance formula
+            unsigned char gray = (unsigned char)(0.3 * r + 0.59 * g + 0.11 * b);
+            grayscale_image[i * width + j] = gray;
+        }
+    }
+
+    return grayscale_image;
+}
 
 // Function to apply a mask to an image
 unsigned char* masking(unsigned char *image, unsigned char *mask, int img_w, int img_h, int img_chan) {

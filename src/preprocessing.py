@@ -58,19 +58,13 @@ class preprocessData:
             pass
         return img
     def calculate_skewness(self,data):
-        """
-        Calculate skewness of all data 
-
-        Parameters:
-        data (list) : Input dat for calculation
-
-        return:
-        skewness : Skewness value of the data 
-        """
-        n = len(data)
+        n = data.shape[0] * data.shape[1]
         mean_blue = np.mean(data)
         std_dev_blue = np.std(data)
-        skewness = (n / ((n - 1) * (n - 2))) * np.sum(((data - mean_blue) / std_dev_blue))
+        
+        # Calculate skewness
+        skewness = (n / ((n - 1) * (n - 2))) * np.sum(((data - mean_blue) / std_dev_blue) ** 3)
+        
         return skewness
     def crop_center(self,img, crop_size:int):
         h, w = img.shape[:2]

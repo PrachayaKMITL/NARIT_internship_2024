@@ -93,7 +93,6 @@ for folder in folders:
     
     logging.info(f"CSV file saved: {output_path}")
     print(f"---{os.path.basename(folder)} file write complete---")
-    del glcm, df
     gc.collect()
     logging.info(f"Memory cleared after processing folder: {folder}")
 logging.info("Dataset generation completed.")

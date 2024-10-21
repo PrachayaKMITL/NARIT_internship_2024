@@ -6,6 +6,8 @@
     ],
     "files.associations": {
         "stdio.h": "c",
-        "Test.C": "cpp"
+        "Test.C": "cpp",
+        "feature_extraction.h": "c",
+        "preprocessing.h": "c"
     }
 }
