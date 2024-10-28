@@ -27,7 +27,7 @@ def copy_categorical_day(image_directory, output_directory, mask_directory, clas
     mask = cv2.imread(mask_directory, cv2.IMREAD_GRAYSCALE)
     # Load and preprocess images
     images, name = preprocessData().load_images_and_preprocess(path=image_directory, mask=mask, apply_crop_sun=False)
-    name = [int(i) for i in name]
+    
     final = []
     for i in images:
         R,G,B = cv2.split(i)
@@ -64,11 +64,8 @@ def copy_categorical_day(image_directory, output_directory, mask_directory, clas
             # Move the file to the target folder
             image_filename = name_day[idx]
             source_path = os.path.join(image_directory, str(image_filename) + '.png')
-            write_image = cv2.imread(source_path)
-            if write_image.shape[0] != 705 or write_image.shape[1] != 1036:
-                write_image = cv2.resize(write_image, (1036, 705))
-            write_path = os.path.join(target_folder,str(image_filename)+'.png')
-            cv2.imwrite(write_path,write_image)
+            destination_path = os.path.join(target_folder, str(image_filename) + '.png')
+            shutil.copy2(source_path, destination_path)
 def count_files_in_folder(directory):
     return sum(os.path.isfile(os.path.join(directory, f)) for f in os.listdir(directory))
 def process_image_folders(main_directory):
@@ -93,7 +90,7 @@ def process_image_folders(main_directory):
         print(f"Processed images from {subdir}")
 
 # Define the main image directory
-main_image_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_TNO\2023-12'
+main_image_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_TNO\2024-09'
 output_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\Dataset\Image_data_TNO\Image_data_Day'
 for i in os.listdir(main_image_directory):
     image_data_path = os.path.join(main_image_directory, i)
