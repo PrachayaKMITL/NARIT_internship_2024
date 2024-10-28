@@ -11,12 +11,23 @@ int main() {
     double P[LEVELS][LEVELS];
     int img_w, img_h, img_c;  // Variables to store image width, height, and channel count
     int mask_w, mask_h, mask_c;
-    int crop_size = 570;       // Desired size for cropping
-    int crop_w, crop_h;        // Variables to store the width and height of the cropped image
+    //int crop_size = 570;       // Desired size for cropping
+    //int crop_w, crop_h;        // Variables to store the width and height of the cropped image
 
     // Correcting string literals: use double quotes for strings
     const char *image_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_data\\Dataset\\image_data_Astropark\\image_data_Day\\Clear\\638545284152007058.png";
     const char *mask_path = "C:\\Users\\ASUS\\Documents\\NARIT_internship_2024\\NARIT_internship_2024\\masks\\Domestic observatories\\mask_Astropark.png";
+    //char image_path[200];
+    //char mask_path[100];
+
+    //printf("Enter image path : ");
+    //getchar();
+    //scanf("%s", image_path);
+    
+
+    //printf("Enter mask path : ");
+    //getchar();
+    //scanf("%s", &mask_path);
 
     // Load the image
     unsigned char *image = stbi_load(image_path, &img_w, &img_h, &img_c, 0);

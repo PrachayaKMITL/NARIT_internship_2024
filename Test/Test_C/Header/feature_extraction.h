@@ -173,7 +173,6 @@ void compute_properties(double P[LEVELS][LEVELS], int num_levels, const char* pr
     }
 }
 
-// Define type definition
 typedef struct {
     double skewness;
     double std_dev;
@@ -183,77 +182,63 @@ typedef struct {
 } ImageStatistics;
 
 ImageStatistics calculate_image_statistics(unsigned char *image, int img_w, int img_h, int img_c) {
-    // Allocate memory for separate channels
+    // Allocate memory for red and blue channels only
     unsigned char *red_channel = (unsigned char *)malloc(img_w * img_h);
-    unsigned char *green_channel = (unsigned char *)malloc(img_w * img_h); // Corrected this line
     unsigned char *blue_channel = (unsigned char *)malloc(img_w * img_h);
 
-    if (!red_channel || !green_channel || !blue_channel) {
+    if (!red_channel || !blue_channel) {
         printf("Error allocating memory for channels.\n");
         // Free any allocated memory before returning
         free(red_channel);
-        free(green_channel);
         free(blue_channel);
         // Return a default value or handle the error appropriately
         ImageStatistics stats = {0, 0, 0, 0, 0};
         return stats;
     }
 
-    // Separate the channels
+    // Separate the red and blue channels
     for (int y = 0; y < img_h; y++) {
         for (int x = 0; x < img_w; x++) {
-            // Calculate pixel index
             int pixel_index = (y * img_w + x) * img_c;
             red_channel[y * img_w + x] = image[pixel_index];
-            green_channel[y * img_w + x] = image[pixel_index + 1];
             blue_channel[y * img_w + x] = image[pixel_index + 2];
         }
     }
 
-    // Calculate average for each channel
-    double sum_red = 0.0, sum_green = 0.0, sum_blue = 0.0;
-
+    // Calculate average for red and blue channels
+    double sum_red = 0.0, sum_blue = 0.0;
     for (int i = 0; i < img_w * img_h; i++) {
         sum_red += red_channel[i];
-        sum_green += green_channel[i];
         sum_blue += blue_channel[i];
     }
-
     double avg_red = sum_red / (img_w * img_h);
     double avg_blue = sum_blue / (img_w * img_h);
 
-    // Calculate std deviation
-    double var_red = 0.0, var_green = 0.0, var_blue = 0.0;
-
+    // Calculate standard deviation for the blue channel
+    double var_blue = 0.0;
     for (int i = 0; i < img_w * img_h; i++) {
-        var_red += (red_channel[i] - avg_red) * (red_channel[i] - avg_red);
         var_blue += (blue_channel[i] - avg_blue) * (blue_channel[i] - avg_blue);
     }
     double std_dev_blue = sqrt(var_blue / (img_w * img_h));
 
-    // Calculate skewness
-    double skewness_red = 0.0, skewness_green = 0.0, skewness_blue = 0.0;
-
+    // Calculate skewness for the blue channel
+    double skewness_blue = 0.0;
     for (int i = 0; i < img_w * img_h; i++) {
         skewness_blue += pow((blue_channel[i] - avg_blue) / std_dev_blue, 3);
     }
-
-    skewness_red /= img_w * img_h;
-    skewness_green /= img_w * img_h;
-    skewness_blue = ((img_w * img_h) / ((double)((img_w * img_h) - 1) * ((img_w * img_h)- 2))) * skewness_blue;
+    skewness_blue = ((img_w * img_h) / ((double)((img_w * img_h) - 1) * ((img_w * img_h) - 2))) * skewness_blue;
 
     // Calculate average difference
     double avg_diff = avg_red - avg_blue;
 
     // Free allocated memory
     free(red_channel);
-    free(green_channel);
     free(blue_channel);
 
     // Return statistics
     ImageStatistics stats = {
-        .skewness = skewness_blue, // You can choose which skewness to return
-        .std_dev = std_dev_blue, // Same for std_dev
+        .skewness = skewness_blue,
+        .std_dev = std_dev_blue,
         .avg_red = avg_red,
         .avg_blue = avg_blue,
         .avg_diff = avg_diff
