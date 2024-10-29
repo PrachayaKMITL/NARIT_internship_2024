@@ -160,10 +160,10 @@ $$
 $$
 
 $$
-\large Z = Z \ score  \\   
-x = input \ data \\
-\mu = mean \ value \\
-\sigma = standard \ deviation \\
+\large Z = Z \ score //  
+x = input \ data //
+\mu = mean \ value //
+\sigma = standard \ deviation //
 $$
 
 This formula is a standard deviation formula to convert large scaler data to Z-score value with respect to mean and stadard deviation of each feature. All function for calculation of this Z-score value is included in `Test/Test_C/header folder` 
