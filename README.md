@@ -154,6 +154,7 @@ Since this model is trained with scaling method to ensure model performance, sca
 <b>In this repository</b>, I include the `scaler_param.py` and `Astropark_day.onnx` which is scaler parameter files and model file. To use the model file, user need to scale all parameter down with this following formula.
 
 ### Standard Scaler
+
 $$
 \huge Z = \frac{(x-\mu)}{\sigma}
 $$
@@ -163,6 +164,7 @@ x = input \ data \\
 \mu = mean \ value \\
 \sigma = standard \ deviation
 $$
+
 This formula is a standard deviation formula to convert large scaler data to Z-score value with respect to mean and stadard deviation of each feature. All function for calculation of this Z-score value is included in `Test/Test_C/header folder` 
 
 ### Classification model
