@@ -147,5 +147,29 @@ In models folder, I created machine learning model especially for astropark, Chi
   <b><u>Figure : Confusion matrix for Nighttime</u></b> 
 </p>
 
-### Prediction
-Since this model is trained with scaling method to ensure model performance, scaling model also save into `scaler_params.csv` and `scaler_params.txt` to use in C or other languages. Since default Python filename is not suitable in other languages. Use may further develop model and be using other normalization/scaling feature in the future but please be aware of unsupport language which may not support model file.
+## Prediction
+Since this model is trained with scaling method to ensure model performance, scaling model also save into `scaler_params.csv` and `scaler_params.txt` to use in C or other languages. Since default Python filename is not suitable in other languages. User may further develop model and be using other normalization/scaling feature in the future but please be aware of unsupport language which may not support model file<br><br>
+<b>Prediction of the model</b> requires feature extraction programs and onnxruntime library. This can be done by installation of onnxruntime library in that language (if not Python). The model export to .onnx file can perform without remarkable error in the program and prediction deficiency. 
+
+<b>In this repository</b>, I include the `scaler_param.py` and `Astropark_day.onnx` which is scaler parameter files and model file. To use the model file, user need to scale all parameter down with this following formula.
+
+### Standard Scaler
+$$
+\huge Z = \frac{(x-\mu)}{\sigma}
+$$
+$$
+\large Z = Z \ score \\      
+x = input \ data \\
+\mu = mean \ value \\
+\sigma = standard \ deviation
+$$
+This formula is a standard deviation formula to convert large scaler data to Z-score value with respect to mean and stadard deviation of each feature. All function for calculation of this Z-score value is included in `Test/Test_C/header folder` 
+
+### Classification model
+As mention earlier, classification model that use in this project is RandomForest classifier. This classifier has capability of prediction in probability of each class, which will be compared with other class probability and find the highest. Thus, model can be describe by .onnx graph <b>like this</b><br>
+<p align="center">
+  <img src="output_png\Model_map.png" alt="Sample Image" width="500"/>
+  <br/>
+  <b><u>Figure : RandomForest classifier structure graph</u></b> 
+</p>
+<br>As you can see the model can gives out both probability and output label. User can use output_probability to calculate percentage of each class (eg. Clear 60 percent) or else.<br>

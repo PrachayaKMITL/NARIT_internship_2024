@@ -153,3 +153,98 @@ From this criterion, we can assign label to each image and classify it into clas
                                          |
 
 </details>
+
+## Training.py
+This programs is aim to train machine learning model using Python on Sklearn framework. Each run of model accuracy and validation score would have variability due to 
+model inconsistancy and dataset size. Range of accuracy from a decent dataset could be around 85-98 %. <span style="color: red;"> <B><u>Please not that training dataset size and dataset quality have large effect on model accuracy.
+</u> </B> </span> (See [sklearn documentation](URL "https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.RandomForestClassifier.html") for more information).
+
+### Features 
+<details>
+<summary>Textural features</summary>
+
+| Property       | Description                                                                                     |
+|----------------|------------------------------------------------------------------------------------------------|
+| `contrast`     | Measures the local intensity variation. High contrast values indicate significant intensity changes. |
+| `dissimilarity`| Captures how different the pairs of pixels are; it increases with differences in gray levels.    |
+| `homogeneity`  | Assesses how similar the pixel pairs are. Higher values indicate more uniform textures.         |
+| `energy`       | Represents the sum of squared elements in the GLCM (Gray Level Co-occurrence Matrix), indicating texture uniformity. Higher energy values mean less texture complexity. |
+| `correlation`  | Measures the linear dependency of gray levels in the image. High values indicate a predictable pattern. |
+| `ASM`          | Also known as Angular Second Moment, it reflects the texture uniformity by summing the squared elements of the GLCM. Higher ASM indicates a more uniform texture. |
+</details>
+<details>
+<summary>Spectral features</summary>
+
+| Feature         | Description                                                                                   |
+|-----------------|-----------------------------------------------------------------------------------------------|
+| `intensity`     | Average intensity of the blue channel (`B`) across the image. It provides a measure of brightness. |
+| `chan_b`        | Mean value of the blue channel (`B`). Useful for analyzing blue hues in the image.             |
+| `chan_r`        | Mean value of the red channel (`R`). Useful for analyzing red hues in the image.               |
+| `skewness`      | Skewness of the blue channel (`B`). It indicates the asymmetry in the pixel distribution of the channel. |
+| `std`           | Standard deviation of the blue channel (`B`). Measures the spread or variability of pixel values in the channel. |
+| `diff`          | Mean difference between the red channel (`R`) and the blue channel (`B`). Highlights color contrasts between red and blue tones. |
+| `statistical`   | Combined features including skewness, standard deviation, difference, and mean values of red and blue channels for detailed statistical analysis. |
+
+</details>
+
+From this criterion, we can assign label to each image and classify it into classes.<br><br>
+**Input** : Image directory<br>
+**Output** : Classified image based on cloud percentages<br>
+### Program details
+<details>
+<summary>Parameters</summary> 
+
+| **Parameter**         | **Description**                                                                                       |
+|-----------------------|-----------------------------------------------------------------------------------------------------|
+| `sky_cam`              | User input for selecting configuration based on location (e.g., specific observatory location).     |
+| `path`                 | Directory path to the folder containing images to be processed.                                     |
+| `GLCM_param`           | User input list containing distance and angle parameters for the GLCM calculation.                  |
+| `location`             | Coordinates of the selected sky camera location, loaded from configuration.                         |
+| `time_zone`            | Time zone associated with the selected sky camera location, loaded from configuration.              |
+| `start_date`           | The start date for the dataset, loaded from configuration.                                          |
+| `mask_path`            | File path to the mask image for preprocessing images.                                               |
+| `output_directory`     | Directory path to save the processed dataset CSV files.                                             |
+| `properties`           | List of GLCM properties used for feature extraction (e.g., contrast, dissimilarity, etc.).         |
+| `output_folder`        | Subdirectory path within the output directory for storing specific results based on GLCM parameters.|
+| `folders`              | List of subdirectories within the main `path`, each representing a class of images.                 |
+| `class_folder`         | Full path to a specific image class folder, containing images to be processed.                      |
+| `GLCM`                 | List of computed GLCM features for the processed images.                                            |
+| `Filename`             | List of image filenames that were processed.                                                        |
+| `Intensity`            | List of intensity values calculated from the images.                                                |
+| `skewness`             | List of skewness values calculated from the images.                                                 |
+| `std`                  | List of standard deviation values calculated from the images.                                       |
+| `diff`                 | List of difference values between channels calculated from the images.                              |
+| `chan_r`               | List of mean red channel values calculated from the images.                                         |
+| `chan_b`               | List of mean blue channel values calculated from the images.                                        |
+| `images`               | Preprocessed images loaded from a single image path using a mask.                                   |
+| `gray`                 | Grayscale converted versions of the preprocessed images.                                            |
+| `glcm`                 | Computed GLCM features for a single grayscale image.                                                |
+| `sky_cat`              | Name of the sky condition class derived from the folder name.                                       |
+| `output_filename`      | Filename for the output CSV file that stores the dataset for a specific class.                      |
+| `output_path`          | Full file path to where the CSV file will be saved.                                                 |
+
+
+
+
+</details>
+<details>
+<summary>Functions</summary> 
+
+| **Function Name**                                | **Description**                                                                                           |
+|--------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| `preprocessData().load_single_image`             | Loads a single image from a specified path, applies a mask, and optionally crops out the sun. Returns the preprocessed image and its name. |
+| `preprocessData().computeGlcm`                   | Computes the Gray Level Co-occurrence Matrix (GLCM) for a grayscale image based on specified distance and angle parameters. Outputs GLCM features. |
+| `Builddataset().Statistical`                     | Computes statistical metrics like mean intensity, skewness, standard deviation, and channel differences for a set of input images. |
+| `preprocessData().getDataframe`                  | Constructs a DataFrame with GLCM properties, statistical features, and intensity for a set of images. The DataFrame is used to organize and save the dataset. |
+| `os.makedirs`                                    | Creates directories if they do not exist, used for organizing logs and output folders.                     |
+| `cv2.imread`                                     | Loads an image from a file, with an option to read in grayscale mode (used here to read mask images).      |
+| `gc.collect`                                     | Clears memory by running garbage collection after processing a batch of images, ensuring efficient memory usage. |
+| `json.load`                                      | Reads configuration data from a JSON file, providing settings like paths, parameters, and mask information for image processing. |
+| `logging.info`                                   | Logs informational messages to a log file, documenting the progress and status of the dataset generation.  |
+| `time.strftime`                                  | Formats the current date and time for use in file naming (e.g., timestamped log files).                    |
+| `os.listdir`                                     | Retrieves a list of folders or files within a directory, used to iterate through image datasets.           |
+| `cv2.cvtColor`                                   | Converts images from one color space to another, in this case, from RGB to grayscale.                      |
+| `pd.DataFrame.to_csv`                            | Saves a DataFrame as a CSV file to a specified path, used for creating output datasets.                    |
+                                         |
+
+</details>
