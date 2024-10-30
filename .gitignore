@@ -13,3 +13,4 @@ src/__pycache__/
 #ignore MD for now
 README.md
 *.log
+write_label.ipynb

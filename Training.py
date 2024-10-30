@@ -57,11 +57,17 @@ X = scaler.transform(raw_data)
 y = label
 
 # Split data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 logging.info("Data split into training and test sets completed.")
 
 # Train RandomForest Classifier (optional)
-clf = RandomForestClassifier(n_estimators=200, criterion='entropy')
+clf = RandomForestClassifier(
+    n_estimators=200,  # Increase number of trees for better performance
+    criterion='entropy',  # Entropy can be more sensitive to important features in some datasets
+    bootstrap=True,  # Ensures samples are randomly selected with replacement
+    random_state=42,  # For reproducibility
+    n_jobs=-1  # Use all cores for parallel processing
+)
 clf.fit(X_train, y_train)
 logging.info("---Model training completed---")
 print("---Model training completed---")
@@ -71,7 +77,7 @@ logging.info(f"RandomForest Parameters: {clf.get_params()}")
 print(f"RandomForest Parameters: {clf.get_params()}")
 
 # Estimate validation score
-scores = cross_val_score(estimator=clf, X=X_train, y=y_train)
+scores = cross_val_score(estimator=clf, X=X_train, y=y_train, cv=3)
 logging.info(f"Cross-validation scores: {scores}")
 logging.info(f"Mean accuracy: {scores.mean()}")
 print(f"Cross-validation scores: {scores}")

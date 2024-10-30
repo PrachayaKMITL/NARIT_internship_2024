@@ -8,14 +8,12 @@ from src.ClassPrediction import prediction
 
 # Define the start and end dates
 start_date = '2024-01-01'
-end_date = '2023-12-20'
-location = [18.57364,98.48198]
-'''
-json_file_path = r"C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\RBratio.json"
-with open(json_file_path, 'r') as json_file:
-    data = json.load(json_file)
-factor = [data['Factor'], data['Factor_night']]
-'''
+end_date = '2024-09-10'
+location = [18.849417,98.9538]
+#json_file_path = r"C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\RBratio.json"
+#with open(json_file_path, 'r') as json_file:
+#    data = json.load(json_file)
+#factor = [data['Factor'], data['Factor_night']]
 days = timeConvertion().time_duration(start_date, end_date, include_end_date=True).days
 
 # Create SunPosition instance
@@ -24,7 +22,8 @@ EoT = SunPosition.calculate_EoT(day=days)
 TC = SunPosition.TimeCorrectionFactor(Longitude=location[1], LSTM=LSTM, EoT=EoT)
 dec = SunPosition.declination(day=days)
 sunrise1, sunset1 = SunPosition.DaytimeInfo(latitude=location[0], declination=dec, TC=TC)
-
+print(f"sunrise : {sunrise1}")
+print(f"sunset : {sunset1}")
 def copy_categorical_day(image_directory, output_directory, mask_directory, classes:dict, mode):
     mask = cv2.imread(mask_directory, cv2.IMREAD_GRAYSCALE)
     # Load and preprocess images
@@ -42,19 +41,17 @@ def copy_categorical_day(image_directory, output_directory, mask_directory, clas
 
     decimal = [timeConvertion().datetime_to_decimal(time=timeConvertion().ticks_to_datetime(ticks=t, time_zone=7)) for t in name]
     filtering = lambda x: (x > sunrise1) & (x < sunset1)
-    
     if mode == 'day':
         day_indices = [index for index, value in enumerate(decimal) if filtering(value)]
         
-    else: 
+    if mode == 'night': 
         day_indices = [index for index, value in enumerate(decimal) if not filtering(value)]
-    
     final_day = [final[i] for i in day_indices]
     name_day = [name[i] for i in day_indices]
     
     # Calculate cloud coverage and classify the images
-    percentage = [prediction().CloudRatio(i, mask=mask) for i in final_day]
-    classifier = [prediction().classify_sky(i, r) for i, r in percentage]
+    percentage = [prediction().CloudRatio(i, mask=mask)[0] for i in final_day]
+    classifier = [prediction().classify_sky(i) for i in percentage]
 
     # For each classified image, move it to the appropriate class folder
     for idx, cloud_class in enumerate(classifier):
@@ -91,12 +88,12 @@ def process_image_folders(main_directory):
     for subdir, _, _ in os.walk(main_directory):
         copy_categorical_day(subdir, output_directory, 
                              mask_directory=r'C:\Users\ASUS\Documents\NARIT_internship_2024\NARIT_internship_2024\masks\Domestic observatories\Mask_TNO.png', 
-                             classes=classes_map, mode='day')
+                             classes=classes_map, mode='night')
         print(f"Processed images from {subdir}")
 
 # Define the main image directory
-main_image_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_TNO\2023-12'
-output_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\Dataset\Image_data_TNO\Image_data_Day'
+main_image_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\All_sky_camera_TNO\2024-09'
+output_directory = r'C:\Users\ASUS\Documents\NARIT_internship_data\Dataset\Image_data_TNO\Image_data_Night'
 for i in os.listdir(main_image_directory):
     image_data_path = os.path.join(main_image_directory, i)
     process_image_folders(image_data_path)
