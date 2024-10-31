@@ -7,7 +7,7 @@
 #ignore Pycache
 # Ignore Python bytecode files
 *.pyc
-*.png
+
 # Ignore __pycache__ in the src/ directory
 src/__pycache__/
 #ignore MD for now

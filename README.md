@@ -176,3 +176,8 @@ As mention earlier, classification model that use in this project is RandomFores
   <b><u>Figure : RandomForest classifier structure graph</u></b> 
 </p>
 <br>As you can see the model can gives out both probability and output label. User can use output_probability to calculate percentage of each class (eg. Clear 60 percent) or else.<br>
+
+## Current working
+1. Edit src folder, will soon test program for any sky camera compatibility
+2. Funtions .h in C (Not yet export to .dll).
+3. benchmarking program.
