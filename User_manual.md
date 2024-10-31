@@ -4,6 +4,16 @@ This file is the user manual to correctly use programs in this Github repository
 However, if user wants/needs to include further processing or steps,<span style="color: red;"> <B><u>Please note that all steps in training must include in prediction step</u> </B> </span>. Otherwise, the model will not be able to predict
 correctly.
 
+# source code
+In src folder, there're a few source files, which is develop for readability and adjustability of programs. There're mostly for development of testing in older development of the program (unsupervised learning) but function that is currently in use will add manual for
+readability inside each function. Description of each file is
+1. ClassPrediction.py : For prediction from dataset with given model and evaluation of models(Older version).
+2. ConstructDataset.py : For concatenation of dataset with multiple subfolders.
+3. feature_extraion.py : For calculation GLCM and statistical values of image without importing Skimage 
+4. ModelTraining.py : <span style='color: red'>~~Currently unused~~</span>
+5. preprocessing.py : Use for image preprocessing and load images.
+6. TotalCalculation.py : Use for calculation of time and sunrise,sunset.
+
 ## Write_label.py
 This programs is use for initially labeling image into classes. The method is to read sky image and evaluate sky in Oktas scale (See [WMO_oktas](URL "https://worldweather.wmo.int/oktas.html") for more information).
 From this criterion, we can assign label to each image and classify it into classes.<br>
@@ -157,7 +167,10 @@ From this criterion, we can assign label to each image and classify it into clas
 ## Training.py
 This programs is aim to train machine learning model using Python on Sklearn framework. Each run of model accuracy and validation score would have variability due to 
 model inconsistancy and dataset size. Range of accuracy from a decent dataset could be around 85-98 %. <span style="color: red;"> <B><u>Please not that training dataset size and dataset quality have large effect on model accuracy.
-</u> </B> </span> (See [sklearn documentation](URL "https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.RandomForestClassifier.html") for more information).
+</u> </B> </span> (See [sklearn documentation](URL "https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.RandomForestClassifier.html") for more information).<br><br>
+
+**Input** : Dataset<br>
+**Output** : Model file (.onnx) and parameters<br>
 
 ### Features 
 <details>
