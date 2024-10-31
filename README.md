@@ -180,4 +180,4 @@ As mention earlier, classification model that use in this project is RandomFores
 ## Current working
 1. Edit src folder, will soon test program for any sky camera compatibility
 2. Funtions .h in C (Not yet export to .dll).
-3. benchmarking program.
+3. Benchmarking program.
